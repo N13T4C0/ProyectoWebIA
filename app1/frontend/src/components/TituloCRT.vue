@@ -45,6 +45,7 @@ uniform vec2 uRes;
 uniform float uTime;
 uniform float uGlitch;
 uniform float uDpr;
+uniform vec3 uFondo;
 varying vec2 vUv;
 
 float rand(float n) { return fract(sin(n * 12.9898) * 43758.5453); }
@@ -81,8 +82,12 @@ void main() {
   col *= mix(0.72, 1.0, linea);
 
   // Grano solo sobre el texto, para que el fondo siga totalmente negro
-  float brillo = max(col.r, max(col.g, col.b));
-  col += (hash(gl_FragCoord.xy + uTime * 60.0) - 0.5) * 0.12 * step(0.03, brillo);
+  col += (hash(gl_FragCoord.xy + uTime * 60.0) - 0.5) * 0.12;
+
+  // Los efectos solo se aplican donde hay texto; el resto queda del color del fondo
+  vec3 original = vec3(r, g, b);
+  float esTexto = smoothstep(0.03, 0.15, distance(original, uFondo));
+  col = mix(uFondo, col, esTexto);
 
   gl_FragColor = vec4(max(col, 0.0), 1.0);
 }`
@@ -121,7 +126,7 @@ function iniciarWebGL() {
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR)
 
-  for (const nombre of ['tMap', 'uRes', 'uTime', 'uGlitch', 'uDpr']) {
+  for (const nombre of ['tMap', 'uRes', 'uTime', 'uGlitch', 'uDpr', 'uFondo']) {
     uniformes[nombre] = gl.getUniformLocation(programa, nombre)
   }
 }
@@ -144,10 +149,15 @@ function partirLinea(ctx, texto, anchoMax) {
   return resultado
 }
 
+// Color de fondo real de la página (así el canvas no se ve como un rectángulo)
+function colorFondo() {
+  return getComputedStyle(document.body).backgroundColor // "rgb(r, g, b)"
+}
+
 function dibujarTexto() {
   const dpr = Math.min(window.devicePixelRatio || 1, 2)
   const anchoCss = contenedor.value.clientWidth
-  const tamano = Math.max(28, Math.min(60, anchoCss * 0.056))
+  const tamano = Math.max(24, Math.min(42, anchoCss * 0.04))
   const interlineado = tamano * 1.05
   const margen = 14
 
@@ -167,7 +177,7 @@ function dibujarTexto() {
   textoCanvas.width = Math.round(anchoCss * dpr)
   textoCanvas.height = Math.round(altoCss * dpr)
 
-  ctx.fillStyle = '#000'
+  ctx.fillStyle = colorFondo()
   ctx.fillRect(0, 0, textoCanvas.width, textoCanvas.height)
   ctx.fillStyle = props.color
   ctx.textAlign = 'center'
@@ -188,6 +198,8 @@ function dibujarTexto() {
   gl.uniform1i(uniformes.tMap, 0)
   gl.uniform2f(uniformes.uRes, c.width, c.height)
   gl.uniform1f(uniformes.uDpr, dpr)
+  const [r, g, b] = colorFondo().match(/\d+/g).map(Number)
+  gl.uniform3f(uniformes.uFondo, r / 255, g / 255, b / 255)
 }
 
 function pintar(tiempo, glitch) {

@@ -29,7 +29,7 @@ onBeforeUnmount(() => clearTimeout(temporizador))
 </script>
 
 <template>
-  <div role="img" aria-label="Musicfy" class="logo-entrada inline-block">
+  <div role="img" aria-label="Musicfy" class="logo-entrada inline-block mix-blend-screen">
     <video
       ref="video"
       poster="/logo-poster.jpg"
@@ -37,7 +37,7 @@ onBeforeUnmount(() => clearTimeout(temporizador))
       playsinline
       preload="auto"
       aria-hidden="true"
-      class="h-12 sm:h-16 w-auto mix-blend-screen select-none pointer-events-none"
+      class="h-20 sm:h-24 w-auto select-none pointer-events-none"
       @ended="alTerminar"
     >
       <source src="/logo.webm" type="video/webm" />

@@ -2,7 +2,8 @@
 
 /* Paleta y tipografías del proyecto */
 @theme {
-  --color-ink: #000000;
+  --color-ink: #18181b;     /* fondo gris muy oscuro, no negro puro */
+  --color-tarjeta: #222226; /* fondo de las cajas */
   --color-neon: #f58cf5;
   --color-texto: #cccccc;
   --font-display: "Instrument Serif", Georgia, serif;
@@ -37,7 +38,7 @@
     z-index: 50;
     background: repeating-linear-gradient(
       to bottom,
-      rgb(0 0 0 / 0.15) 0 1px,
+      rgb(0 0 0 / 0.1) 0 1px,
       transparent 1px 3px
     );
   }

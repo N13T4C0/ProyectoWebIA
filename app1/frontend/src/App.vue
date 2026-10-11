@@ -68,17 +68,17 @@ function usarEjemplo(texto) {
     @animationend="mostrarEncendido = false"
   ></div>
 
-  <div class="tv-contenido min-h-dvh flex flex-col">
+  <div class="tv-contenido bg-ink min-h-dvh flex flex-col">
     <!-- Barra superior -->
     <div class="h-2 mx-3 mt-3 bg-neon chroma-box" aria-hidden="true"></div>
 
     <!-- Cabecera con el logo animado -->
-    <header class="px-4 sm:px-6 pt-2">
+    <header class="px-4 sm:px-6 pt-3 flex justify-center">
       <LogoAnimado />
     </header>
 
     <main class="flex-1 w-full max-w-5xl mx-auto px-4 pb-12">
-      <TituloCRT :lineas="titulo" class="-mt-2 sm:-mt-8" />
+      <TituloCRT :lineas="titulo" class="mt-1" />
 
       <form class="max-w-3xl mx-auto mt-3 sm:mt-4" novalidate @submit.prevent="enviar">
         <label
@@ -88,7 +88,7 @@ function usarEjemplo(texto) {
           <span aria-hidden="true"></span>Tus gustos musicales<span aria-hidden="true"></span>
         </label>
 
-        <div class="border-2 border-neon/70 chroma-box p-4 sm:p-5">
+        <div class="bg-tarjeta border border-white/10 rounded-2xl shadow-lg shadow-black/20 p-4 sm:p-6">
           <textarea
             id="gustos"
             v-model="gustos"
@@ -97,7 +97,7 @@ function usarEjemplo(texto) {
             :aria-invalid="errorValidacion ? 'true' : 'false'"
             aria-describedby="ayuda-gustos contador-gustos error-gustos"
             placeholder="Ej.: me flipa el indie de los 2000, algo de shoegaze y Rosalía cuando estoy de bajón…"
-            class="w-full resize-y bg-ink border border-neutral-700 p-3 text-xl leading-snug text-neutral-100 placeholder:text-neutral-600 focus:outline-none focus-visible:border-neon disabled:opacity-60"
+            class="w-full resize-y bg-ink/70 border border-white/10 rounded-xl p-3 text-xl leading-snug text-neutral-100 placeholder:text-neutral-500 transition-colors focus:outline-none focus-visible:border-neon/70 focus-visible:ring-2 focus-visible:ring-neon/20 disabled:opacity-60"
             @input="errorValidacion = ''"
           ></textarea>
 
@@ -122,7 +122,7 @@ function usarEjemplo(texto) {
               :key="ejemplo"
               type="button"
               :disabled="cargando"
-              class="border border-neutral-700 px-2 leading-7 text-neutral-400 hover:border-neutral-300 hover:text-neutral-100 focus:outline-none focus-visible:border-neon focus-visible:text-neutral-100 disabled:opacity-50"
+              class="rounded-full bg-white/5 border border-white/10 px-3 leading-7 text-neutral-300 transition-colors hover:bg-white/10 hover:text-white focus:outline-none focus-visible:border-neon/70 disabled:opacity-50"
               @click="usarEjemplo(ejemplo)"
             >
               {{ ejemplo }}
@@ -133,7 +133,7 @@ function usarEjemplo(texto) {
             <button
               type="submit"
               :disabled="cargando"
-              class="w-full sm:w-auto bg-neutral-200 text-ink uppercase tracking-wider text-2xl px-10 py-1.5 hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-4 focus-visible:ring-offset-ink focus-visible:ring-neon disabled:opacity-60 disabled:cursor-wait"
+              class="w-full sm:w-auto rounded-xl bg-neutral-100 text-ink uppercase tracking-wider text-2xl px-10 py-1.5 transition-colors hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-4 focus-visible:ring-offset-ink focus-visible:ring-neon disabled:opacity-60 disabled:cursor-wait"
             >
               {{ cargando ? 'Buscando…' : 'Recomiéndame artistas' }}
             </button>
@@ -148,7 +148,7 @@ function usarEjemplo(texto) {
           <span class="inline-block animate-pulse motion-reduce:animate-none" aria-hidden="true">▌</span>
         </p>
 
-        <div v-else-if="estado === 'resultado'" class="border-2 border-neon/70 chroma-box p-4 sm:p-5">
+        <div v-else-if="estado === 'resultado'" class="bg-tarjeta border border-white/10 rounded-2xl shadow-lg shadow-black/20 p-4 sm:p-6">
           <h2 class="uppercase tracking-widest text-xl text-neutral-400 mb-2">
             <span aria-hidden="true">✦ </span>Tus recomendaciones
           </h2>
@@ -156,7 +156,7 @@ function usarEjemplo(texto) {
           <p class="whitespace-pre-wrap break-words text-xl leading-snug text-neutral-100">{{ resultado }}</p>
         </div>
 
-        <div v-else-if="estado === 'error'" role="alert" class="border-2 border-red-500 p-4 sm:p-5">
+        <div v-else-if="estado === 'error'" role="alert" class="bg-red-950/40 border border-red-500/40 rounded-2xl p-4 sm:p-6">
           <h2 class="uppercase tracking-widest text-xl text-red-400 mb-1">
             <span aria-hidden="true">✱ </span>Algo ha fallado
           </h2>
