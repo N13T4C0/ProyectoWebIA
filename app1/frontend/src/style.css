@@ -1,1 +1,44 @@
 @import "tailwindcss";
+
+/* Paleta y tipografías del proyecto */
+@theme {
+  --color-ink: #000000;
+  --color-neon: #f58cf5;
+  --color-texto: #cccccc;
+  --font-display: "Instrument Serif", Georgia, serif;
+  --font-pixel: "VT323", ui-monospace, monospace;
+}
+
+/* Borde partido rojo/azul en textos (efecto CRT ligero, versión CSS) */
+@utility chroma {
+  text-shadow: -1.5px 0 rgb(255 40 90 / 0.8), 1.5px 0 rgb(40 90 255 / 0.8);
+}
+
+/* El mismo efecto para cajas y bordes */
+@utility chroma-box {
+  box-shadow: -2px 0 rgb(255 40 90 / 0.5), 2px 0 rgb(40 90 255 / 0.5);
+}
+
+@layer base {
+  body {
+    @apply bg-ink text-texto font-pixel antialiased;
+  }
+
+  ::selection {
+    @apply bg-neon text-ink;
+  }
+
+  /* Líneas de barrido oscuras encima de todo: el fondo sigue siendo negro puro */
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 50;
+    background: repeating-linear-gradient(
+      to bottom,
+      rgb(0 0 0 / 0.15) 0 1px,
+      transparent 1px 3px
+    );
+  }
+}

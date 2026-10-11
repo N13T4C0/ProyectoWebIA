@@ -1,8 +1,158 @@
 <script setup>
+import { ref, computed } from 'vue'
+import { recomendar, MAX_CARACTERES } from './api.js'
+import LogoAnimado from './components/LogoAnimado.vue'
+import TituloCRT from './components/TituloCRT.vue'
+
+const titulo = [
+  { texto: 'Cuéntanos qué música te mueve', cursiva: false },
+  { texto: 'y descubre a quién escuchar después.', cursiva: true },
+]
+
+const ejemplos = [
+  'Indie 2000s · Arctic Monkeys',
+  'Flamenco fusión · Rosalía',
+  'Electrónica chill · Bonobo',
+]
+
+const gustos = ref('')
+const estado = ref('inicial') // 'inicial' | 'cargando' | 'resultado' | 'error'
+const resultado = ref('')
+const mensajeError = ref('')
+const errorValidacion = ref('')
+
+const caracteres = computed(() => gustos.value.length)
+const excedido = computed(() => caracteres.value > MAX_CARACTERES)
+const cargando = computed(() => estado.value === 'cargando')
+
+function validar() {
+  if (!gustos.value.trim()) return 'Escribe algo sobre la música que te gusta.'
+  if (excedido.value) return `El texto no puede superar los ${MAX_CARACTERES} caracteres.`
+  return ''
+}
+
+async function enviar() {
+  if (cargando.value) return // evita envíos duplicados
+
+  errorValidacion.value = validar()
+  if (errorValidacion.value) return
+
+  estado.value = 'cargando'
+  resultado.value = ''
+  mensajeError.value = ''
+
+  try {
+    const data = await recomendar(gustos.value.trim())
+    resultado.value = data.resultado
+    estado.value = 'resultado'
+  } catch (e) {
+    mensajeError.value = e.mensaje ?? 'Algo ha fallado. Inténtalo de nuevo.'
+    estado.value = 'error'
+  }
+}
+
+function usarEjemplo(texto) {
+  gustos.value = texto
+  errorValidacion.value = ''
+}
 </script>
 
 <template>
-  <main class="min-h-screen bg-slate-100 flex items-center justify-center">
-    <h1 class="text-3xl font-bold text-indigo-600">Recomendador musical</h1>
-  </main>
+  <div class="min-h-dvh flex flex-col">
+    <!-- Barra superior -->
+    <div class="h-2 mx-3 mt-3 bg-neon chroma-box" aria-hidden="true"></div>
+
+    <!-- Cabecera con el logo animado -->
+    <header class="px-4 sm:px-6 pt-2">
+      <LogoAnimado />
+    </header>
+
+    <main class="flex-1 w-full max-w-5xl mx-auto px-4 pb-12">
+      <TituloCRT :lineas="titulo" class="-mt-2 sm:-mt-8" />
+
+      <form class="max-w-3xl mx-auto mt-3 sm:mt-4" novalidate @submit.prevent="enviar">
+        <label
+          for="gustos"
+          class="block text-center uppercase tracking-widest text-xl sm:text-2xl text-neon chroma mb-3"
+        >
+          <span aria-hidden="true"></span>Tus gustos musicales<span aria-hidden="true"></span>
+        </label>
+
+        <div class="border-2 border-neon/70 chroma-box p-4 sm:p-5">
+          <textarea
+            id="gustos"
+            v-model="gustos"
+            rows="3"
+            :disabled="cargando"
+            :aria-invalid="errorValidacion ? 'true' : 'false'"
+            aria-describedby="ayuda-gustos contador-gustos error-gustos"
+            placeholder="Ej.: me flipa el indie de los 2000, algo de shoegaze y Rosalía cuando estoy de bajón…"
+            class="w-full resize-y bg-ink border border-neutral-700 p-3 text-xl leading-snug text-neutral-100 placeholder:text-neutral-600 focus:outline-none focus-visible:border-neon disabled:opacity-60"
+            @input="errorValidacion = ''"
+          ></textarea>
+
+          <div class="mt-1 flex items-start justify-between gap-4 text-lg">
+            <p id="ayuda-gustos" class="text-neutral-500">Artistas, géneros, épocas, momentos…</p>
+            <p
+              id="contador-gustos"
+              class="shrink-0 tabular-nums"
+              :class="excedido ? 'text-red-400' : 'text-neutral-500'"
+            >
+              {{ caracteres }}/{{ MAX_CARACTERES }}
+            </p>
+          </div>
+
+          <p v-if="errorValidacion" id="error-gustos" role="alert" class="text-red-400 text-xl">{{ errorValidacion }}</p>
+
+          <!-- Ejemplos para rellenar el campo -->
+          <div class="mt-2 flex flex-wrap items-center gap-2 text-base sm:text-lg">
+            <span class="text-neutral-500 uppercase">Prueba con:</span>
+            <button
+              v-for="ejemplo in ejemplos"
+              :key="ejemplo"
+              type="button"
+              :disabled="cargando"
+              class="border border-neutral-700 px-2 leading-7 text-neutral-400 hover:border-neutral-300 hover:text-neutral-100 focus:outline-none focus-visible:border-neon focus-visible:text-neutral-100 disabled:opacity-50"
+              @click="usarEjemplo(ejemplo)"
+            >
+              {{ ejemplo }}
+            </button>
+          </div>
+
+          <div class="mt-4 flex justify-center">
+            <button
+              type="submit"
+              :disabled="cargando"
+              class="w-full sm:w-auto bg-neutral-200 text-ink uppercase tracking-wider text-2xl px-10 py-1.5 hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-4 focus-visible:ring-offset-ink focus-visible:ring-neon disabled:opacity-60 disabled:cursor-wait"
+            >
+              {{ cargando ? 'Buscando…' : 'Recomiéndame artistas' }}
+            </button>
+          </div>
+        </div>
+      </form>
+
+      <!-- Zona de resultado: espera, resultado o error -->
+      <section class="max-w-3xl mx-auto mt-8" aria-live="polite">
+        <p v-if="estado === 'cargando'" class="text-center text-2xl uppercase tracking-widest text-neutral-400">
+          Buscando artistas para ti
+          <span class="inline-block animate-pulse motion-reduce:animate-none" aria-hidden="true">▌</span>
+        </p>
+
+        <div v-else-if="estado === 'resultado'" class="border-2 border-neon/70 chroma-box p-4 sm:p-5">
+          <h2 class="uppercase tracking-widest text-xl text-neutral-400 mb-2">
+            <span aria-hidden="true">✦ </span>Tus recomendaciones
+          </h2>
+          <!-- Se muestra como texto plano: nunca v-html con contenido de la IA -->
+          <p class="whitespace-pre-wrap break-words text-xl leading-snug text-neutral-100">{{ resultado }}</p>
+        </div>
+
+        <div v-else-if="estado === 'error'" role="alert" class="border-2 border-red-500 p-4 sm:p-5">
+          <h2 class="uppercase tracking-widest text-xl text-red-400 mb-1">
+            <span aria-hidden="true">✱ </span>Algo ha fallado
+          </h2>
+          <p class="text-xl text-red-200">{{ mensajeError }}</p>
+        </div>
+      </section>
+    </main>
+  </div>
 </template>
