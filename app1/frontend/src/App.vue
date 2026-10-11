@@ -15,6 +15,9 @@ const ejemplos = [
   'Electrónica chill · Bonobo',
 ]
 
+// Línea blanca del encendido de tele (se quita al terminar la animación)
+const mostrarEncendido = ref(true)
+
 const gustos = ref('')
 const estado = ref('inicial') // 'inicial' | 'cargando' | 'resultado' | 'error'
 const resultado = ref('')
@@ -58,7 +61,14 @@ function usarEjemplo(texto) {
 </script>
 
 <template>
-  <div class="min-h-dvh flex flex-col">
+  <div
+    v-if="mostrarEncendido"
+    class="tv-linea"
+    aria-hidden="true"
+    @animationend="mostrarEncendido = false"
+  ></div>
+
+  <div class="tv-contenido min-h-dvh flex flex-col">
     <!-- Barra superior -->
     <div class="h-2 mx-3 mt-3 bg-neon chroma-box" aria-hidden="true"></div>
 

@@ -42,3 +42,56 @@
     );
   }
 }
+
+/* ---------- Entrada de la página: encendido de tele antigua ---------- */
+
+/* Línea blanca que se abre en horizontal y luego en vertical */
+.tv-linea {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 2px;
+  z-index: 60;
+  pointer-events: none;
+  background: #fff;
+  box-shadow: 0 0 18px 4px rgb(245 140 245 / 0.8);
+  animation: tv-linea 0.9s ease-out forwards;
+}
+
+@keyframes tv-linea {
+  0%   { transform: translateY(-50%) scaleX(0);              opacity: 1; }
+  30%  { transform: translateY(-50%) scaleX(1);              opacity: 1; }
+  55%  { transform: translateY(-50%) scaleX(1) scaleY(80);   opacity: 0.5; }
+  100% { transform: translateY(-50%) scaleX(1) scaleY(400);  opacity: 0; }
+}
+
+/* El contenido se "abre" desde una línea, con un destello único */
+.tv-contenido {
+  animation: tv-contenido 0.9s ease-out both;
+}
+
+@keyframes tv-contenido {
+  0%, 30% { transform: scaleY(0.004); opacity: 0; filter: brightness(3); }
+  60%     { transform: scaleY(1.03);  opacity: 1; filter: brightness(1.8) contrast(1.3); }
+  75%     { transform: scaleY(0.99);  filter: brightness(0.8); }
+  100%    { transform: none;          opacity: 1; filter: none; }
+}
+
+/* El logo aparece de izquierda a derecha, a saltos y con los colores separados */
+.logo-entrada {
+  animation: logo-entrada 0.8s steps(10, end) 0.75s both;
+}
+
+@keyframes logo-entrada {
+  0%   { clip-path: inset(0 100% 0 0); filter: drop-shadow(-3px 0 #ff285a) drop-shadow(3px 0 #285aff); }
+  85%  { clip-path: inset(0 0 0 0);    filter: drop-shadow(-3px 0 #ff285a) drop-shadow(3px 0 #285aff); }
+  100% { clip-path: inset(0 0 0 0);    filter: none; }
+}
+
+/* Sin animaciones si el usuario lo pide en su sistema */
+@media (prefers-reduced-motion: reduce) {
+  .tv-linea { display: none; }
+  .tv-contenido,
+  .logo-entrada { animation: none; }
+}

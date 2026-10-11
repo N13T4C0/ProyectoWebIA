@@ -198,7 +198,7 @@ function pintar(tiempo, glitch) {
 
 function bucle(ahora) {
   // Entrada: empieza muy distorsionado y se estabiliza en ~0,9 s
-  const entrada = Math.max(0, 1 - (ahora - inicio) / 900)
+  const entrada = Math.min(1, Math.max(0, 1 - (ahora - inicio) / 900))
 
   // Glitch breve cada 2,5-6,5 s
   if (ahora > proximoGlitch) {
@@ -237,7 +237,7 @@ onMounted(async () => {
   if (movimientoReducido) {
     pintar(0, 0) // imagen fija, sin animación
   } else {
-    inicio = performance.now()
+    inicio = performance.now() + 700 // empieza cuando la "tele" ya está encendida
     proximoGlitch = inicio + 2500
     animacion = requestAnimationFrame(bucle)
   }
