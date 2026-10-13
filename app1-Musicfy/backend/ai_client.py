@@ -78,6 +78,7 @@ async def ask_model(tastes: str) -> dict:
             {"role": "user", "content": tastes},
         ],
         "temperature": 0.7,
+        "max_tokens": config.MAX_TOKENS,
     }
 
     try:
@@ -93,7 +94,19 @@ async def ask_model(tastes: str) -> dict:
         raise AiServiceError("No se ha podido conectar con el servicio de IA.")
 
     if response.status_code != 200:
-        raise AiServiceError("El servicio de IA ha respondido con un error.")
+        if response.status_code == 401:
+            raise AiServiceError("La clave de API de OpenRouter no es válida.")
+        if response.status_code == 402:
+            raise AiServiceError(
+                "OpenRouter ha rechazado la petición por falta de créditos o saldo."
+            )
+        if response.status_code == 429:
+            raise AiServiceError(
+                "OpenRouter ha limitado temporalmente las peticiones. Inténtalo más tarde."
+            )
+        raise AiServiceError(
+            f"El servicio de IA ha respondido con un error (HTTP {response.status_code})."
+        )
 
     try:
         data = response.json()

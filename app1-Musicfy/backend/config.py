@@ -17,3 +17,4 @@ ALLOWED_ORIGINS = [origin.strip() for origin in raw_origins.split(",") if origin
 # Parámetros y límites
 MAX_CARACTERES = int(os.getenv("MAX_CARACTERES", "500"))
 AI_TIMEOUT_SECONDS = float(os.getenv("AI_TIMEOUT_SECONDS", "25.0"))
+MAX_TOKENS = int(os.getenv("MAX_TOKENS", "600"))
