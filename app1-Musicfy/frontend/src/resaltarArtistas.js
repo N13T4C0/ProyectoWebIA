@@ -11,6 +11,12 @@ const PATRON_ETIQUETA = /^(\s*(?:\d+[.)]|[-•*])?\s*(?:nombre del )?(?:artista|
 // "* Radiohead: explicación…" (viñetas solo sin sangría: las sangradas son detalles)
 const PATRON_LISTA = /^(\s*\d+[.)]\s+|[-•*]\s+)(.+)$/
 
+// "**The Strokes**": línea entera en negrita, sin número ni viñeta
+const PATRON_NEGRITA = /^(\s*)\*\*([^*]+)\*\*\s*$/
+
+// Títulos en negrita que no son artistas ("**Indie – Recomendaciones**")
+const ES_TITULO = /recomendaci[oó]n|sugerencia/i
+
 // Separadores habituales entre el nombre y la explicación
 const SEPARADOR = /\s+[-–—]\s+|:\s|\s\(/
 
@@ -30,6 +36,13 @@ function lineaConNombre(prefijo, nombre, resto) {
 }
 
 function segmentarLinea(linea) {
+  // La negrita se mira antes de quitar los ** porque es la pista del nombre
+  const negrita = linea.match(PATRON_NEGRITA)
+  if (negrita && !ES_TITULO.test(negrita[2])) return lineaConNombre(negrita[1], negrita[2], '')
+
+  // El modelo a veces marca en negrita con ** aunque se le pida texto plano
+  linea = linea.replaceAll('**', '')
+
   const etiqueta = linea.match(PATRON_ETIQUETA)
   if (etiqueta) return lineaConNombre(etiqueta[1], etiqueta[2], '')
 
@@ -45,6 +58,5 @@ function segmentarLinea(linea) {
 }
 
 export function resaltarArtistas(texto) {
-  // El modelo a veces marca en negrita con ** aunque se le pida texto plano
-  return texto.replaceAll('**', '').split('\n').map(segmentarLinea)
+  return texto.split('\n').map(segmentarLinea)
 }
