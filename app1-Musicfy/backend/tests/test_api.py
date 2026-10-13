@@ -1,5 +1,6 @@
 from fastapi.testclient import TestClient
 import main
+from ai_client import AiTimeoutError, AiServiceError, AiInvalidResponseError
 
 # El "navegador de mentira" conectado a nuestra app
 cliente = TestClient(main.app)
@@ -96,3 +97,39 @@ def test_se_quitan_espacios_antes_de_llamar_a_la_ia(monkeypatch):
     cliente.post("/api/recommend", json={"tastes": "   rock de los 80   "})
 
     assert llamadas[0] == "rock de los 80"  
+
+
+def test_ia_tarda_demasiado_da_504(monkeypatch):
+    async def ia_lenta_mock(tastes):
+        raise AiTimeoutError()
+
+    monkeypatch.setattr(main, "ask_model", ia_lenta_mock)
+
+    respuesta = cliente.post("/api/recommend", json={"tastes": "jazz"})
+
+    assert respuesta.status_code == 504
+    assert respuesta.json()["error"]["codigo"] == "TIMEOUT"
+
+
+def test_ia_falla_da_502(monkeypatch):
+    async def ia_rota_mock(tastes):
+        raise AiServiceError()
+
+    monkeypatch.setattr(main, "ask_model", ia_rota_mock)
+
+    respuesta = cliente.post("/api/recommend", json={"tastes": "jazz"})
+
+    assert respuesta.status_code == 502
+    assert respuesta.json()["error"]["codigo"] == "IA_NO_DISPONIBLE"
+
+
+def test_ia_responde_algo_roto_da_502(monkeypatch):
+    async def ia_rara_mock(tastes):
+        raise AiInvalidResponseError()
+
+    monkeypatch.setattr(main, "ask_model", ia_rara_mock)
+
+    respuesta = cliente.post("/api/recommend", json={"tastes": "jazz"})
+
+    assert respuesta.status_code == 502
+    assert respuesta.json()["error"]["codigo"] == "RESPUESTA_INVALIDA"
