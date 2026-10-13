@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { recomendar, MAX_CARACTERES } from './api.js'
+import { resaltarArtistas } from './resaltarArtistas.js'
 import LogoAnimado from './components/LogoAnimado.vue'
 import TituloCRT from './components/TituloCRT.vue'
 
@@ -27,6 +28,7 @@ const errorValidacion = ref('')
 const caracteres = computed(() => gustos.value.length)
 const excedido = computed(() => caracteres.value > MAX_CARACTERES)
 const cargando = computed(() => estado.value === 'cargando')
+const lineasResultado = computed(() => resaltarArtistas(resultado.value))
 
 function validar() {
   if (!gustos.value.trim()) return 'Escribe algo sobre la música que te gusta.'
@@ -153,7 +155,13 @@ function usarEjemplo(texto) {
             <span aria-hidden="true">✦ </span>Tus recomendaciones
           </h2>
           <!-- Se muestra como texto plano: nunca v-html con contenido de la IA -->
-          <p class="whitespace-pre-wrap break-words text-xl leading-snug text-neutral-100">{{ resultado }}</p>
+          <p class="whitespace-pre-wrap break-words text-xl leading-snug text-neutral-100"><template
+              v-for="(linea, i) in lineasResultado"
+              :key="i"
+            ><template v-for="(t, j) in linea" :key="j"><strong
+                  v-if="t.artista"
+                  class="font-normal text-2xl text-neon chroma"
+                >{{ t.texto }}</strong><template v-else>{{ t.texto }}</template></template>{{ i < lineasResultado.length - 1 ? '\n' : '' }}</template></p>
         </div>
 
         <div v-else-if="estado === 'error'" role="alert" class="bg-red-950/40 border border-red-500/40 rounded-2xl p-4 sm:p-6">
