@@ -38,3 +38,61 @@ def test_texto_demasiado_largo_da_422():
     respuesta = cliente.post("/api/recommend", json={"tastes": texto})
 
     assert respuesta.status_code == 422
+
+def test_texto_valido_devuelve_recomendacion(monkeypatch):
+    llamadas = []  # aquí apuntamos cada vez que se llama a la IA para comprobar que solo se llama una vez por petición o no se llama si hay error
+
+    # La IA mock: responde siempre lo mismo y apunta que la han llamado
+    async def ia_mock(tastes):
+        llamadas.append(tastes)
+        return {"resultado": "Prueba: escucha a Queen"}
+
+    # Durante este test, main usará la IA mock en vez de la real
+    monkeypatch.setattr(main, "ask_model", ia_mock)
+
+    respuesta = cliente.post("/api/recommend", json={"tastes": "rock de los 80"})
+
+    assert respuesta.status_code == 200
+    assert respuesta.json()["resultado"] == "Prueba: escucha a Queen"
+    assert len(llamadas) == 1                # una sola llamada a la IA
+    assert llamadas[0] == "rock de los 80"   # con el texto del usuario
+
+
+def test_texto_justo_en_el_limite_funciona(monkeypatch):
+    async def ia_mock(tastes):
+        return {"resultado": "ok"}
+
+    monkeypatch.setattr(main, "ask_model", ia_mock)
+    texto = "a" * main.config.MAX_CARACTERES
+
+    respuesta = cliente.post("/api/recommend", json={"tastes": texto})
+
+    assert respuesta.status_code == 200
+
+
+def test_texto_vacio_no_llama_a_la_ia(monkeypatch):
+    llamadas = []
+
+    async def ia_mock(tastes):
+        llamadas.append(tastes)
+        return {"resultado": "no debería llegar aquí"}
+
+    monkeypatch.setattr(main, "ask_model", ia_mock)
+
+    cliente.post("/api/recommend", json={"tastes": ""})
+
+    assert llamadas == []  # la lista sigue vacía: nadie llamó a la IA
+
+
+def test_se_quitan_espacios_antes_de_llamar_a_la_ia(monkeypatch):
+    llamadas = []
+
+    async def ia_mock(tastes):
+        llamadas.append(tastes)
+        return {"resultado": "ok"}
+
+    monkeypatch.setattr(main, "ask_model", ia_mock)
+
+    cliente.post("/api/recommend", json={"tastes": "   rock de los 80   "})
+
+    assert llamadas[0] == "rock de los 80"  
