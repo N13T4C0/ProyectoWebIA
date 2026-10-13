@@ -16,22 +16,45 @@ const ejemplos = [
   'Electrónica chill · Bonobo',
 ]
 
+const GENEROS = [
+  'Indie', 'Rock', 'Pop', 'Electrónica', 'Hip hop', 'Flamenco',
+  'Jazz', 'Metal', 'R&B', 'Reggaetón', 'Clásica', 'Lo-fi',
+]
+const MAX_GENEROS = 5
+
 // Línea blanca del encendido de tele (se quita al terminar la animación)
 const mostrarEncendido = ref(true)
 
 const gustos = ref('')
+const generosElegidos = ref([])
 const estado = ref('inicial') // 'inicial' | 'cargando' | 'resultado' | 'error'
 const resultado = ref('')
 const mensajeError = ref('')
 const errorValidacion = ref('')
 
-const caracteres = computed(() => gustos.value.length)
+// Texto que se envía al backend: géneros elegidos + lo que haya escrito el usuario
+const textoEnviar = computed(() => {
+  const texto = gustos.value.trim()
+  if (!generosElegidos.value.length) return texto
+  const generos = `Géneros: ${generosElegidos.value.join(', ').toLowerCase()}.`
+  return texto ? `${generos} Además: ${texto}` : generos
+})
+
+const caracteres = computed(() => textoEnviar.value.length)
 const excedido = computed(() => caracteres.value > MAX_CARACTERES)
 const cargando = computed(() => estado.value === 'cargando')
+const limiteGeneros = computed(() => generosElegidos.value.length >= MAX_GENEROS)
 const lineasResultado = computed(() => resaltarArtistas(resultado.value))
 
+function alternarGenero(genero) {
+  const i = generosElegidos.value.indexOf(genero)
+  if (i !== -1) generosElegidos.value.splice(i, 1)
+  else if (!limiteGeneros.value) generosElegidos.value.push(genero)
+  errorValidacion.value = ''
+}
+
 function validar() {
-  if (!gustos.value.trim()) return 'Escribe algo sobre la música que te gusta.'
+  if (!textoEnviar.value) return 'Elige algún género o escribe algo sobre la música que te gusta.'
   if (excedido.value) return `El texto no puede superar los ${MAX_CARACTERES} caracteres.`
   return ''
 }
@@ -47,7 +70,7 @@ async function enviar() {
   mensajeError.value = ''
 
   try {
-    const data = await recomendar(gustos.value.trim())
+    const data = await recomendar(textoEnviar.value)
     resultado.value = data.resultado
     estado.value = 'resultado'
   } catch (e) {
@@ -91,6 +114,30 @@ function usarEjemplo(texto) {
         </label>
 
         <div class="bg-tarjeta border border-white/10 rounded-2xl shadow-lg shadow-black/20 p-4 sm:p-6">
+          <!-- Géneros: se pueden marcar varios (hasta MAX_GENEROS) -->
+          <fieldset class="mb-3">
+            <legend class="mb-2 flex w-full items-baseline justify-between gap-4 text-lg">
+              <span class="uppercase text-neutral-400">Elige géneros</span>
+              <span class="tabular-nums text-neutral-500">{{ generosElegidos.length }}/{{ MAX_GENEROS }}</span>
+            </legend>
+            <div class="flex flex-wrap gap-2 text-lg sm:text-xl">
+              <button
+                v-for="genero in GENEROS"
+                :key="genero"
+                type="button"
+                :aria-pressed="generosElegidos.includes(genero) ? 'true' : 'false'"
+                :disabled="cargando || (limiteGeneros && !generosElegidos.includes(genero))"
+                class="rounded-full border px-3 leading-8 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-neon/40 disabled:opacity-40 disabled:cursor-not-allowed"
+                :class="generosElegidos.includes(genero)
+                  ? 'bg-neon text-ink border-neon chroma-box'
+                  : 'bg-white/5 border-white/10 text-neutral-300 hover:bg-white/10 hover:text-white'"
+                @click="alternarGenero(genero)"
+              >
+                {{ genero }}
+              </button>
+            </div>
+          </fieldset>
+
           <textarea
             id="gustos"
             v-model="gustos"
