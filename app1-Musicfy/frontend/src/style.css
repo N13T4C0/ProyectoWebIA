@@ -25,6 +25,11 @@
     @apply bg-ink text-texto font-pixel antialiased;
   }
 
+  /* El scaleY(1.03) de la entrada no debe crear scroll: se recorta lo que sobresale */
+  #app {
+    overflow: clip;
+  }
+
   ::selection {
     @apply bg-neon text-ink;
   }
