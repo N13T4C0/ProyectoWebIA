@@ -105,15 +105,15 @@ function usarEjemplo(texto) {
     <main class="flex-1 w-full max-w-5xl mx-auto px-4 pb-12">
       <TituloCRT :lineas="titulo" class="mt-1" />
 
-      <form class="max-w-3xl mx-auto mt-3 sm:mt-4" novalidate @submit.prevent="enviar">
+      <form class="max-w-4xl mx-auto mt-2" novalidate @submit.prevent="enviar">
         <label
           for="gustos"
-          class="block text-center uppercase tracking-widest text-xl sm:text-2xl text-neon chroma mb-3"
+          class="block text-center uppercase tracking-widest text-xl sm:text-2xl text-neon chroma mb-2"
         >
           <span aria-hidden="true"></span>Tus gustos musicales<span aria-hidden="true"></span>
         </label>
 
-        <div class="bg-tarjeta border border-white/10 rounded-2xl shadow-lg shadow-black/20 p-4 sm:p-6">
+        <div class="bg-tarjeta border border-white/10 rounded-2xl shadow-lg shadow-black/20 p-4 sm:p-5">
           <!-- Géneros: se pueden marcar varios (hasta MAX_GENEROS) -->
           <fieldset class="mb-3">
             <legend class="mb-2 flex w-full items-baseline justify-between gap-4 text-lg">
@@ -141,7 +141,7 @@ function usarEjemplo(texto) {
           <textarea
             id="gustos"
             v-model="gustos"
-            rows="3"
+            rows="2"
             :disabled="cargando"
             :aria-invalid="errorValidacion ? 'true' : 'false'"
             aria-describedby="ayuda-gustos contador-gustos error-gustos"
@@ -178,7 +178,7 @@ function usarEjemplo(texto) {
             </button>
           </div>
 
-          <div class="mt-4 flex justify-center">
+          <div class="mt-3 flex justify-center">
             <button
               type="submit"
               :disabled="cargando"
@@ -191,7 +191,7 @@ function usarEjemplo(texto) {
       </form>
 
       <!-- Zona de resultado: espera, resultado o error -->
-      <section class="max-w-3xl mx-auto mt-8" aria-live="polite">
+      <section class="max-w-4xl mx-auto mt-8" aria-live="polite">
         <p v-if="estado === 'cargando'" class="text-center text-2xl uppercase tracking-widest text-neutral-400">
           Buscando artistas para ti
           <span class="inline-block animate-pulse motion-reduce:animate-none" aria-hidden="true">▌</span>

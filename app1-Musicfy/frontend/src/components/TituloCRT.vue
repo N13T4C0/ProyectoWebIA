@@ -159,7 +159,7 @@ function dibujarTexto() {
   const anchoCss = contenedor.value.clientWidth
   const tamano = Math.max(24, Math.min(42, anchoCss * 0.04))
   const interlineado = tamano * 1.05
-  const margen = 14
+  const margen = 6
 
   const ctx = textoCanvas.getContext('2d')
   const fuente = (cursiva) => `${cursiva ? 'italic ' : ''}400 ${tamano * dpr}px "Instrument Serif", Georgia, serif`

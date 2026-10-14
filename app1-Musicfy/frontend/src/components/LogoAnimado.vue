@@ -37,7 +37,7 @@ onBeforeUnmount(() => clearTimeout(temporizador))
       playsinline
       preload="auto"
       aria-hidden="true"
-      class="h-20 sm:h-24 w-auto select-none pointer-events-none"
+      class="h-16 sm:h-20 w-auto select-none pointer-events-none"
       @ended="alTerminar"
     >
       <source src="/logo.webm" type="video/webm" />
