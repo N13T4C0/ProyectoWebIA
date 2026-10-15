@@ -5,7 +5,8 @@
 
 export const MAX_CARACTERES = 500 // Pendiente de confirmar con backend
 
-const BASE_URL = (import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8000').replace(/\/$/, '')
+// En desarrollo el backend va aparte (localhost:8000); en producción va en el mismo dominio (/api)
+const BASE_URL = (import.meta.env.VITE_API_BASE_URL ?? (import.meta.env.DEV ? 'http://localhost:8000' : '')).replace(/\/$/, '')
 const USAR_MOCK = import.meta.env.VITE_USE_MOCK === 'true'
 const TIMEOUT_MS = 30000
 
