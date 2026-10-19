@@ -22,7 +22,7 @@ export const categorias = [
         titulo: 'Musicfy',
         subtitulo: 'App 1 · Recomendador musical con IA',
         icono: 'musica',
-        url: null, // ← pon aquí la URL de Vercel, p. ej. 'https://musicfy.vercel.app'
+        url: 'https://proyectowebia.vercel.app/',
       },
       {
         titulo: 'Spec Kit',
