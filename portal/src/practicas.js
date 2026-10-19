@@ -1,0 +1,43 @@
+// ─────────────────────────────────────────────────────────────
+//  CONTENIDO DEL MENÚ
+//  Para añadir una práctica, añade un objeto en "items".
+//  url: null  →  aparece como "Próximamente".
+// ─────────────────────────────────────────────────────────────
+
+export const categorias = [
+  {
+    nombre: 'Equipo',
+    icono: 'equipo',
+    items: [
+      { titulo: 'David', subtitulo: 'Presentación y pruebas', icono: 'persona', url: null, info: true },
+      { titulo: 'Luna', subtitulo: 'Backend', icono: 'persona', url: null, info: true },
+      { titulo: 'Nieto', subtitulo: 'Frontend y despliegue', icono: 'persona', url: null, info: true },
+    ],
+  },
+  {
+    nombre: 'UD1',
+    icono: 'mando',
+    items: [
+      {
+        titulo: 'Musicfy',
+        subtitulo: 'App 1 · Recomendador musical con IA',
+        icono: 'musica',
+        url: null, // ← pon aquí la URL de Vercel, p. ej. 'https://musicfy.vercel.app'
+      },
+      {
+        titulo: 'Spec Kit',
+        subtitulo: 'App 2 · Desarrollo guiado por especificaciones',
+        icono: 'spec',
+        url: null,
+      },
+    ],
+  },
+  {
+    nombre: 'UD2',
+    icono: 'carpeta',
+    items: [{ titulo: 'Próximamente', subtitulo: 'Nuevas prácticas', icono: 'carpeta', url: null }],
+  },
+]
+
+// Categoría seleccionada al abrir la página (0 = Equipo, 1 = UD1…)
+export const CATEGORIA_INICIAL = 1

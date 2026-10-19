@@ -1,0 +1,25 @@
+@import "tailwindcss";
+
+@theme {
+  --font-xmb: "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+@layer base {
+  html,
+  body,
+  #app {
+    height: 100%;
+  }
+  body {
+    @apply font-xmb text-white antialiased overflow-hidden select-none;
+    background: #101a4a;
+  }
+}
+
+/* Brillo suave en textos e iconos, como en la consola */
+@utility glow {
+  filter: drop-shadow(0 0 6px rgb(255 255 255 / 0.35));
+}
+@utility text-glow {
+  text-shadow: 0 0 10px rgb(255 255 255 / 0.45), 0 1px 2px rgb(0 0 0 / 0.35);
+}
