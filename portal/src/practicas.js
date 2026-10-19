@@ -9,9 +9,9 @@ export const categorias = [
     nombre: 'Equipo',
     icono: 'equipo',
     items: [
-      { titulo: 'David', subtitulo: 'Presentación y pruebas', icono: 'persona', url: null, info: true },
-      { titulo: 'Luna', subtitulo: 'Backend', icono: 'persona', url: null, info: true },
-      { titulo: 'Nieto', subtitulo: 'Frontend y despliegue', icono: 'persona', url: null, info: true },
+      { titulo: 'David Molina', subtitulo: '', icono: 'persona', url: null, info: true },
+      { titulo: 'Mario Luna', subtitulo: '', icono: 'persona', url: null, info: true },
+      { titulo: 'Jose Antonio Nieto', subtitulo: '', icono: 'persona', url: null, info: true },
     ],
   },
   {
