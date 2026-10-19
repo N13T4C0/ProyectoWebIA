@@ -61,18 +61,18 @@ class AiInvalidResponseError(AiError):
 
 async def ask_model(tastes: str) -> dict:
     """Envía los gustos musicales a OpenRouter y devuelve el resultado estructurado."""
-    if not config.OPENROUTER_API_KEY:
-        raise AiServiceError("No se ha configurado la clave de API de OpenRouter.")
+    if not config.GEMINI_API_KEY or "PEGA_AQUI" in config.GEMINI_API_KEY:
+        raise AiServiceError("No se ha configurado la clave de API en el archivo .env.")
 
     headers = {
-        "Authorization": f"Bearer {config.OPENROUTER_API_KEY}",
+        "Authorization": f"Bearer {config.GEMINI_API_KEY}",
         "Content-Type": "application/json",
         "HTTP-Referer": "https://musicfy.local",
         "X-Title": "Musicfy",
     }
 
     payload = {
-        "model": config.OPENROUTER_MODEL,
+        "model": config.GEMINI_MODEL,
         "messages": [
             {"role": "system", "content": SYSTEM_PROMPT},
             {"role": "user", "content": tastes},
@@ -84,7 +84,7 @@ async def ask_model(tastes: str) -> dict:
     try:
         async with httpx.AsyncClient(timeout=config.AI_TIMEOUT_SECONDS) as client:
             response = await client.post(
-                config.OPENROUTER_URL,
+                config.GEMINI_URL,
                 headers=headers,
                 json=payload,
             )
@@ -95,14 +95,14 @@ async def ask_model(tastes: str) -> dict:
 
     if response.status_code != 200:
         if response.status_code == 401:
-            raise AiServiceError("La clave de API de OpenRouter no es válida.")
+            raise AiServiceError("La clave de API no es válida o ha expirado.")
         if response.status_code == 402:
             raise AiServiceError(
-                "OpenRouter ha rechazado la petición por falta de créditos o saldo."
+                "El servicio de IA ha rechazado la petición por falta de créditos o saldo."
             )
         if response.status_code == 429:
             raise AiServiceError(
-                "OpenRouter ha limitado temporalmente las peticiones. Inténtalo más tarde."
+                "El servicio de IA ha limitado temporalmente las peticiones (cuota excedida). Inténtalo más tarde."
             )
         raise AiServiceError(
             f"El servicio de IA ha respondido con un error (HTTP {response.status_code})."
