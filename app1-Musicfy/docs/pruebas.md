@@ -113,3 +113,7 @@ era OpenRouter; desde entonces es la API de Gemini de Google.
 
 - Al ejecutar pytest aparece un aviso de deprecación de Starlette sobre `httpx`.
   No afecta a los resultados.
+
+
+# App 2 - Spec Kit y clerk
+
