@@ -9,9 +9,9 @@
 | Curso y grupo | Curso de especialización en Aprendizaje automático: gestión de datos y entrenamiento |
 | Asignatura o módulo | Desarrollo de componentes software para sistemas de aprendizaje automático |
 | Docente | Francisco Manuel Matías Prados |
-| Fecha | 19/10/2026 |
-| Versión | 0.4 |
-| Estado | En revisión |
+| Fecha | 25/10/2026 |
+| Versión | 1.0 |
+| Estado | Aprobado |
 
 ### Historial de cambios
 
@@ -21,6 +21,7 @@
 | 0.2     | 15/10/2026 | David | RF-01 actualizado con la selección de géneros y el formato del texto enviado en `tastes`. DAT-01, IU-01 y RNF-04 adaptados al formulario real; RNF-04 es responsive según el criterio 1.4.10 de WCAG 2.1. Fuentes FUE-04 y FUE-05 completadas. PEN-01 y PEN-02 resueltos y PEN-05 añadido.                            |
 | 0.3     | 19/10/2026 | David | RNF-04 y PR-17 ajustados a 320 px. Trazabilidad de RF-01 actualizada. CU-01 incluye los géneros y el flujo A0. Añadidos diagramas de casos de uso y de actividad. PEN-01 resuelto con el nuevo modelo. PEN-03 en curso por el despliegue inicial en Vercel.                                                           |
 | 0.4     | 19/10/2026 | David | Cambio de proveedor de IA: OpenRouter se sustituye por la API de Gemini de Google (Google AI Studio). Actualizados el alcance, el glosario, las fuentes, el contexto, las restricciones, las dependencias, RF-03, RNF-01, INT-02, el caso de uso, la trazabilidad y los diagramas. PEN-01, PEN-03 y PEN-05 resueltos. |
+| 1.0     | 25/10/2026 | David | Revisión cruzada completada por los tres integrantes. Versión aprobada de la ERS de App 1. PEN-04 resuelto. |
 
 ## 1. Introducción
 
@@ -79,7 +80,7 @@ Permite revisar decisiones como los límites de entrada, el comportamiento ante 
 | Gustos (`tastes`) | Texto libre en el que el usuario describe artistas, géneros, épocas o sensaciones que le gustan.                                                                      |
 | Mock              | Sustituto controlado de un componente real que se usa en las pruebas automáticas para no llamar a la IA real.                                                         |
 | CORS              | Mecanismo del navegador que controla qué páginas web pueden llamar al backend.                                                                                        |
-| API de Gemini     | Servicio de Google (Google AI Studio) que da acceso a los modelos Gemini con una clave de API. El backend usa su punto de acceso compatible con el formato de OpenAI. |
+
 ### 1.5. Referencias y fuentes
 
 | ID | Fuente | Fecha o versión | Ubicación |
@@ -443,8 +444,8 @@ La prueba técnica PR-01 (`test_health_responde_ok`) comprueba que el backend re
 | ------ | --------------------------------------------------------------------------------------------------------------------------------- | -------------------- | ------------------------- | -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | PEN-01 | Confirmar el proveedor y el modelo definitivos de IA y documentarlos en `docs/uso-ia.md`.                                         | RF-03, INT-02        | José Antonio Nieto Pérez  | 15/10/2026     | Resuelto 19/10/2026: se sustituye OpenRouter por la API de Gemini de Google con el modelo `gemini-3.5-flash-lite`, configurado en `.env.example` y documentado en `docs/uso-ia.md`. Comprobado con una petición real (PR-13).             |
 | PEN-02 | Verificar en el frontend la validación sin datos, el bloqueo de envíos duplicados y que el resultado se muestra como texto plano. | RF-01, RF-04         | José Antonio Nieto Pérez  | 15/10/2026     | Resuelto 15/10/2026: sin géneros ni texto no se envía la petición; no permite envíos duplicados; el resultado se muestra como texto plano.                                                                                                |
-| PEN-03 | Confirmar las cuentas de Vercel y las URL de despliegue.                                                                          | RES-07, DEP-03       | José Antonio Nieto Pérez  | 15/10/2026     | Resuelto 19/10/2026: frontend y backend desplegados en Vercel y funcionando, con un caso válido y uno de error probados desde la URL pública. Frontend: [https://proyectowebia.vercel.app/]. Backend: [https://proyectowebia.vercel.app/api/recommend]. Detalle en `docs/despliegues.md`. |
-| PEN-04 | Revisión cruzada de esta ERS por los tres integrantes.                                                                            | Todos                | Equipo                    | 19/10/2026     | Pendiente                                                                                                                                                                                                                                 |
+| PEN-03 | Confirmar las cuentas de Vercel y las URL de despliegue.                                                                          | RES-07, DEP-03       | José Antonio Nieto Pérez  | 15/10/2026     | Resuelto 19/10/2026: frontend y backend desplegados en Vercel y funcionando, con un caso válido y uno de error probados desde la URL pública. Frontend: https://proyectowebia.vercel.app/. Backend: https://proyectowebia.vercel.app/api/recommend. Detalle en `docs/despliegues.md`. |
+| PEN-04 | Revisión cruzada de esta ERS por los tres integrantes.                                                                            | Todos                | Equipo                    | 19/10/2026     | Resuelto 25/10/2026: revisada por los tres integrantes, todos conformes (ver 10.2).                                                                                                                                                                                                                                 |
 | PEN-05 | Decidir si se añade saldo a la cuenta de OpenRouter o se cambia a un modelo gratuito antes de la demostración.                    | RF-03, DEP-02        | José Antonio Nieto Pérez  | 19/10/2026     | Resuelto 19/10/2026: se sustituye OpenRouter por el plan gratuito de la API de Gemini (ver PEN-01)                                                                                                                                        |
 
 ## 10. Revisión y conformidad
@@ -461,16 +462,16 @@ La prueba técnica PR-01 (`test_health_responde_ok`) comprueba que el backend re
 - [x] Los datos, las reglas de negocio y las interfaces están descritos.
 - [x] Todos los requisitos están relacionados con su origen y su comprobación.
 - [x] Las dudas pendientes están identificadas y tienen un responsable.
-- [ ] Se han sustituido los marcadores, eliminado los ejemplos y justificado los apartados que no aplican.
+- [x] Se han sustituido los marcadores, eliminado los ejemplos y justificado los apartados que no aplican.
 - [x] Se han actualizado la fecha, la versión y el historial de cambios.
 
 ### 10.2. Registro de revisión
 
 | Revisor y rol            | Versión revisada | Fecha      | Resultado | Observaciones     |
 | ------------------------ | ---------------- | ---------- | --------- | ----------------- |
-| Mario Luna Lopez         | 0.4              | Pendiente  | Pendiente | Pendiente         |
-| Jose Antonio Nieto Perez | 0.4              | Pendiente  | Pendiente | Pendiente         |
-| David Molina Castillo    | 0.1, 0.2 y 0.3   | 19/10/2026 | Conforme  | Sin observaciones |
+| Mario Luna Lopez         | 0.4              | 25/10/2026  | Conforme | Sin observaciones               |
+| Jose Antonio Nieto Perez | 0.4              | 25/10/2026  | Conforme |  Sin observaciones          |
+| David Molina Castillo    | 0.1, 0.2, 0.3 y 0.4   | 19/10/2026 | Conforme  | Sin observaciones |
 
 ## Anexos
 
