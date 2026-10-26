@@ -57,7 +57,7 @@ Problemas concretos encontrados, su origen y su solución.
 |---|---|---|---|
 | 12/10/2026 | Entorno de Python duplicado y carpetas reorganizadas a mitad del trabajo (`app1-Musicfy`). | Falta de acuerdo inicial sobre la ubicación del entorno y la estructura. | Volver a clonar el repositorio y crear un único entorno en `backend/.venv`. |
 | 13/10/2026 | La petición válida devolvía 502 «El servicio de IA ha respondido con un error». | OpenRouter respondía 402: sin `max_tokens`, reservaba saldo para la respuesta máxima del modelo y la cuenta no tenía suficiente. | Limitar `MAX_TOKENS` a 600. Diagnosticado con un script que mostraba el código real de OpenRouter. |
-| 19/10/2026 | Las peticiones a la IA fallaban en el despliegue de Vercel. | Pendiente | Cambio de proveedor a la API de Gemini de Google. Pendiente de detallar. |
+| 19/10/2026 | Las peticiones a la IA fallaban en el despliegue de Vercel: la app respondía que no quedaban más solicitudes. | El saldo y el límite de peticiones de OpenRouter se agotaban muy rápido. | Cambio de proveedor a la API de Gemini de Google (plan gratuito). |
 | 19/10/2026 | Los commits de algunos integrantes aparecen bloqueados por Vercel en GitHub. | El proyecto de Vercel pertenece a un solo integrante y no admite despliegues de commits de otros autores. | No afecta a la app desplegada. Pendiente de decidir si se cambia la configuración. |
 
 ### App 2
