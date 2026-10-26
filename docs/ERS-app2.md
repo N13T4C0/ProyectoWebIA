@@ -9,8 +9,8 @@
 | Curso y grupo | Curso de especialización en Aprendizaje automático: gestión de datos y entrenamiento |
 | Asignatura o módulo | Desarrollo de componentes software para sistemas de aprendizaje automático |
 | Docente | Francisco Manuel Matías Prados |
-| Fecha | 25/10/2026 |
-| Versión | 0.1 |
+| Fecha | 26/10/2026 |
+| Versión | 0.2 |
 | Estado | Borrador |
 
 ### Historial de cambios
@@ -18,6 +18,7 @@
 | Versión | Fecha | Autor | Cambios realizados |
 |---|---|---|---|
 | 0.1 | 25/10/2026 | David | Primera versión, a partir de la ERS de App 1 (versión 1.0). Se añaden la autenticación con Clerk (RF-06, RNF-05), el despliegue en Vercel y en AWS EC2 con Docker, el flujo alternativo de acceso no autorizado y la verificación del token antes de la llamada a la IA. |
+| 0.2 | 26/10/2026 | David | Revisión contra spec.md y tasks.md de Spec Kit. FUE-08 completada; INT-04 e INT-05 con las variables de Clerk; PEN-01 y PEN-04 resueltos; PEN-02 y PEN-05 parciales. |
 
 ## 1. Introducción
 
@@ -106,7 +107,7 @@ Los requisitos RF-01 a RF-05 y RNF-01 a RNF-04 se conservan de la ERS de App 1 (
 | FUE-05 | Documentación oficial de la API de Gemini | Consultada el 19/10/2026 | https://ai.google.dev/gemini-api/docs |
 | FUE-06 | ERS de App 1 | Versión 1.0, 25/10/2026 | `docs/ERS.md` |
 | FUE-07 | Documentación de Clerk: tokens de sesión y verificación manual de JWT | Pendiente: fecha de consulta | https://clerk.com/docs/guides/sessions/session-tokens |
-| FUE-08 | Repositorio oficial de GitHub Spec Kit | Pendiente: versión instalada | https://github.com/github/spec-kit |
+| FUE-08 | Repositorio oficial de GitHub Spec Kit |  Versión 1.2.4.dev0, con Claude Code como agente| https://github.com/github/spec-kit |
 | FUE-09 | Documentación de AWS EC2 (grupos de seguridad) | Pendiente: fecha de consulta | https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-security-groups.html |
 
 ## 2. Descripción general del sistema
@@ -527,11 +528,11 @@ La prueba técnica PR-01 (`GET /health`) comprueba que el backend responde sin n
 
 | ID | Duda o decisión pendiente | Requisitos afectados | Responsable de resolverla | Fecha prevista | Resolución |
 |---|---|---|---|---|---|
-| PEN-01 | Elegir el agente de IA que se usará con Spec Kit y anotar las versiones de Spec Kit y del agente. | RES-09, FUE-08 | Responsable de Spec Kit | Pendiente | Pendiente |
-| PEN-02 | Crear la aplicación de Clerk, configurar los orígenes de local, Vercel y EC2, y definir las variables de configuración del frontend y del backend. | RF-06, INT-04, INT-05, DEP-04 | Responsable de despliegues | Pendiente | Pendiente |
+| PEN-01 | Elegir el agente de IA que se usará con Spec Kit y anotar las versiones de Spec Kit y del agente. | RES-09, FUE-08 | Responsable de Spec Kit | 25/10/2026 | Resuelto 25/10/2026: Claude Code como agente y Spec Kit 1.2.4.dev0 (ver FUE-08). |
+| PEN-02 | Crear la aplicación de Clerk, configurar los orígenes de local, Vercel y EC2, y definir las variables de configuración del frontend y del backend. | RF-06, INT-04, INT-05, DEP-04 | Responsable de despliegues | 26/10/2026 | Parcial 26/10/2026: variables definidas (CLERK_ISSUER, CLERK_JWKS_URL y VITE_CLERK_PUBLISHABLE_KEY). Pendiente: crear la aplicación de Clerk y configurar los orígenes. |
 | PEN-03 | Confirmar con el docente el acceso a AWS, la región, el presupuesto y el nombre de dominio para HTTPS. | RES-07, RES-11, DEP-05 | Responsable de despliegues | Pendiente | Pendiente |
-| PEN-04 | Confirmar el código de error de autenticación (`NO_AUTORIZADO`) y el texto de su mensaje. | RF-06, DAT-03 | Equipo | Pendiente | Pendiente |
-| PEN-05 | Confirmar los nombres definitivos de los tests de App 2 y actualizar la sección 8. | Sección 8 | Responsable de pruebas | Pendiente | Pendiente |
+| PEN-04 | Confirmar el código de error de autenticación (`NO_AUTORIZADO`) y el texto de su mensaje. | RF-06, DAT-03 | Equipo | 26/10/2026 | Resuelto 26/10/2026: código NO_AUTORIZADO con el mensaje «Tu sesión no es válida o ha caducado. Inicia sesión de nuevo.» (contracts/api.md). |
+| PEN-05 | Confirmar los nombres definitivos de los tests de App 2 y actualizar la sección 8. | Sección 8 | Responsable de pruebas | Pendiente | Parcial 26/10/2026: nombres de PR-18 a PR-20 confirmados en tasks.md (T021). Resto pendiente de la implementación. |
 | PEN-06 | Anotar las URL de Vercel y de EC2 de App 2 cuando estén desplegadas. | RES-07, OBJ-06 | Responsable de despliegues | Pendiente | Pendiente |
 | PEN-07 | Revisión cruzada de esta ERS por los tres integrantes. | Todos | Equipo | Pendiente | Pendiente |
 
@@ -558,7 +559,7 @@ La prueba técnica PR-01 (`GET /health`) comprueba que el backend responde sin n
 |---|---|---|---|---|
 | Mario Luna Lopez | 0.1 | Pendiente | Pendiente | Pendiente |
 | Jose Antonio Nieto Perez | 0.1 | Pendiente | Pendiente | Pendiente |
-| David Molina Castillo | 0.1 | 25/10/2026 | Conforme | Borrador inicial; pendiente de ajustar tras la especificación de Spec Kit. |
+| David Molina Castillo | 0.1 y 0.2 | 26/10/2026 | Conforme | Borrador inicial; pendiente de ajustar tras la especificación de Spec Kit. |
 
 ## Anexos
 

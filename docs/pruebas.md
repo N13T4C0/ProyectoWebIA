@@ -131,7 +131,11 @@ tests son provisionales hasta que se implementen.
 
 ## Cómo ejecutar las pruebas
 
-Pendiente: carpeta y comando cuando exista el backend de App 2.
+Desde `app2-Musicfy/backend`, con el entorno activado:
+
+    python -m pytest -v
+
+Las pruebas simulan la IA y el verificador de Clerk, así que no necesitan `.env` ni red (tasks.md, T013).
 
 ## Casos de prueba automáticos
 
@@ -139,20 +143,25 @@ En todos los casos, salvo los de PR-18 a PR-20, se usa un token válido simulado
 
 | ID ERS | Situación | Resultado esperado | Test | Estado |
 |--------|-----------|--------------------|------|--------|
-| PR-01 | Se consulta `/health` sin token | Responde 200 con `status: ok` | Pendiente | Pendiente |
-| PR-06 | Token válido y gustos válidos | Responde 200 y consulta a la IA una sola vez | Pendiente | Pendiente |
-| PR-04 | Token válido y sin campo `tastes` | Responde 422 | Pendiente | Pendiente |
-| PR-02, PR-08 | Token válido y `tastes` vacío | Responde 422 y no consulta a la IA | Pendiente | Pendiente |
-| PR-03 | Token válido y `tastes` solo con espacios | Responde 422 | Pendiente | Pendiente |
-| PR-07 | Token válido y `tastes` con 500 caracteres | Responde 200 | Pendiente | Pendiente |
-| PR-05 | Token válido y `tastes` con 501 caracteres | Responde 422 | Pendiente | Pendiente |
-| PR-09 | Token válido y `tastes` con espacios al principio y al final | La IA recibe el texto sin esos espacios | Pendiente | Pendiente |
-| PR-10 | Token válido y la IA tarda demasiado | Responde 504 con código `TIMEOUT` | Pendiente | Pendiente |
-| PR-11 | Token válido y la IA falla | Responde 502 con código `IA_NO_DISPONIBLE` | Pendiente | Pendiente |
-| PR-12 | Token válido y la IA responde algo no utilizable | Responde 502 con código `RESPUESTA_INVALIDA` | Pendiente | Pendiente |
-| PR-18 | Petición sin cabecera `Authorization` | Responde 401 con código `NO_AUTORIZADO` y no consulta a la IA | `test_sin_token_da_401` (provisional) | Pendiente |
-| PR-19 | Token inválido (firma incorrecta, mal formado o de otro emisor) | Responde 401 y no consulta a la IA | `test_token_invalido_da_401` (provisional) | Pendiente |
-| PR-20 | Token caducado | Responde 401 y no consulta a la IA | `test_token_caducado_da_401` (provisional) | Pendiente |
+| PR-01 | Se consulta `/health` sin token | Responde 200 con `status: ok` | `test_health.py` | Pendiente |
+| PR-06 | Token válido y gustos válidos | Responde 200 y consulta a la IA una sola vez | `test_recommend.py` | Pendiente |
+| PR-09 | Token válido y `tastes` con espacios al principio y al final | La IA recibe el texto sin esos espacios | `test_recommend.py` | Pendiente |
+| PR-04 | Token válido y sin campo `tastes` | Responde 422 | `test_validation.py` | Pendiente |
+| PR-02, PR-08 | Token válido y `tastes` vacío | Responde 422 y no consulta a la IA | `test_validation.py` | Pendiente |
+| PR-03 | Token válido y `tastes` solo con espacios | Responde 422 | `test_validation.py` | Pendiente |
+| PR-07 | Token válido y `tastes` con 500 caracteres | Responde 200 | `test_validation.py` | Pendiente |
+| PR-05 | Token válido y `tastes` con 501 caracteres | Responde 422 | `test_validation.py` | Pendiente |
+| PR-10 | Token válido y la IA tarda demasiado | Responde 504 con código `TIMEOUT` | `test_ai_errors.py` | Pendiente |
+| PR-11 | Token válido y la IA falla | Responde 502 con código `IA_NO_DISPONIBLE` | `test_ai_errors.py` | Pendiente |
+| PR-12 | Token válido y la IA responde algo no utilizable | Responde 502 con código `RESPUESTA_INVALIDA` | `test_ai_errors.py` | Pendiente |
+| PR-18 | Petición sin cabecera `Authorization` | Responde 401 con código `NO_AUTORIZADO` y no consulta a la IA | `test_auth.py::test_sin_token_da_401` | Pendiente |
+| PR-19 | Token inválido (firma incorrecta, mal formado o de otro emisor) | Responde 401 y no consulta a la IA | `test_auth.py::test_token_invalido_da_401` | Pendiente |
+| PR-20 | Token caducado | Responde 401 y no consulta a la IA | `test_auth.py::test_token_caducado_da_401` | Pendiente |
+| Extra | Sin token y con cuerpo inválido | Responde 401 (no 422): la sesión se comprueba antes que la entrada | `test_auth.py` | Pendiente |
+| Extra | Error inesperado en el servidor | Responde 500 `ERROR_INTERNO` sin detalles internos | `test_ai_errors.py` | Pendiente |
+| Extra | Verificador real de Clerk con claves de prueba: firma, emisor, caducidad y origen | Solo acepta tokens correctos; el resto da 401 | `test_clerk_verifier.py` | Pendiente |
+| Extra | Cliente real de Gemini con respuestas simuladas | Traduce cada fallo al código correcto y no envía datos del usuario | `test_gemini_client.py` | Pendiente |
+
 
 ## Resultados de ejecución
 
@@ -169,6 +178,6 @@ En todos los casos, salvo los de PR-18 a PR-20, se usa un token válido simulado
 | PR-15 | No se conservan datos tras recargar la página y reiniciar el backend y los contenedores | Local, Docker y EC2 | Pendiente |
 | PR-16 | Formulario: géneros y texto, solo géneros, nada, doble envío y cierre de sesión con un resultado en pantalla | Navegador con F12 | Pendiente |
 | PR-17 | Accesibilidad con teclado, incluido el acceso de Clerk, y vista de 320 px | Navegador | Pendiente |
-| PR-21 | Sin sesión no se puede enviar; con sesión sí; tras cerrar sesión no; una llamada directa al backend sin token recibe 401 | Vercel y EC2 | Pendiente |
+| PR-21 | Sin sesión no se puede enviar, con sesión sí, tras cerrar sesión no, una llamada directa al backend sin token recibe 401 | Vercel y EC2 | Pendiente |
 | PR-22 | Desde la URL de Vercel: un caso válido con sesión y uno de error | Vercel | Pendiente |
 | PR-23 | Desde la URL HTTPS de EC2, en otro dispositivo: acceso con Clerk, un caso válido, uno de error y reinicio de los contenedores | EC2 | Pendiente |
