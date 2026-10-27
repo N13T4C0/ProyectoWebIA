@@ -3,6 +3,9 @@ import { ref, watch } from 'vue'
 import { Show, SignInButton, UserButton, useAuth } from '@clerk/vue'
 import { GENEROS, composeTastes, recommend } from './api.js'
 
+const MENSAJE_VACIO = 'Elige algún género o escribe algo sobre la música que te gusta'
+const MENSAJE_SIN_CONEXION = 'No se puede conectar con el servicio. Inténtalo más tarde.'
+
 const { isSignedIn, getToken } = useAuth()
 
 const seleccionados = ref([])
@@ -35,6 +38,13 @@ async function enviar() {
     GENEROS.filter((g) => seleccionados.value.includes(g)),
     texto.value,
   )
+  sesionCaducada.value = false
+  // Validación local: con el formulario vacío no se pide token ni se envía nada (CA-RF01-04).
+  if (tastes === '') {
+    error.value = MENSAJE_VACIO
+    return
+  }
+  error.value = ''
   cargando.value = true
   try {
     const token = await getToken.value()
@@ -43,12 +53,13 @@ async function enviar() {
     if (!isSignedIn.value) return
     if (status === 200) {
       resultado.value = data.resultado
-      error.value = ''
-      sesionCaducada.value = false
     } else {
-      error.value = data?.error?.mensaje ?? ''
+      // Sin conexión o sin cuerpo de error del contrato: mensaje genérico.
+      error.value = data?.error?.mensaje ?? MENSAJE_SIN_CONEXION
       sesionCaducada.value = status === 401
     }
+  } catch {
+    error.value = MENSAJE_SIN_CONEXION
   } finally {
     cargando.value = false
   }

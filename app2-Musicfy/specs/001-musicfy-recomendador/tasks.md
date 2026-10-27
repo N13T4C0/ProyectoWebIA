@@ -113,12 +113,12 @@ deben fallar antes de implementar.
 
 ### Tests for User Story 3 ⚠️
 
-- [ ] T026 [P] [US3] Write `backend/tests/test_validation.py` (token válido en todos): PR-02 `""` → 422 `VALIDACION` con el mensaje exacto de contracts/api.md; PR-08 en ese caso `fake_ai.calls == []`; PR-03 `"   "` → 422; PR-04 `{}` → 422; PR-05 `"a" * 501` → 422; PR-07 `"a" * 500` → 200; `"  " + "a"*500 + "  "` → 200 (se cuenta tras recortar); `{"tastes": 123}` → 422; cuerpo no JSON → 422; cuerpo JSON que es una lista → 422; con `MAX_CARACTERES=10` (override de settings) `"a"*11` → 422 y el mensaje dice 10
+- [X] T026 [P] [US3] Write `backend/tests/test_validation.py` (token válido en todos): PR-02 `""` → 422 `VALIDACION` con el mensaje exacto de contracts/api.md; PR-08 en ese caso `fake_ai.calls == []`; PR-03 `"   "` → 422; PR-04 `{}` → 422; PR-05 `"a" * 501` → 422; PR-07 `"a" * 500` → 200; `"  " + "a"*500 + "  "` → 200 (se cuenta tras recortar); `{"tastes": 123}` → 422; cuerpo no JSON → 422; cuerpo JSON que es una lista → 422; con `MAX_CARACTERES=10` (override de settings) `"a"*11` → 422 y el mensaje dice 10
 
 ### Implementation for User Story 3
 
-- [ ] T027 [US3] Make `backend/app/schemas.py` (`validate_tastes`) and `backend/app/main.py` pass T026 without changing the processing order (auth → validación → IA)
-- [ ] T028 [US3] In `frontend/src/App.vue`, before requesting a token, if `composeTastes(...)` is `""` show exactly «Elige algún género o escribe algo sobre la música que te gusta» and send nothing (CA-RF01-04); clear that message on the next valid submit
+- [X] T027 [US3] Make `backend/app/schemas.py` (`validate_tastes`) and `backend/app/main.py` pass T026 without changing the processing order (auth → validación → IA)
+- [X] T028 [US3] In `frontend/src/App.vue`, before requesting a token, if `composeTastes(...)` is `""` show exactly «Elige algún género o escribe algo sobre la música que te gusta» and send nothing (CA-RF01-04); clear that message on the next valid submit
 
 **Checkpoint**: US1–US3 funcionan de forma independiente
 
@@ -132,13 +132,13 @@ deben fallar antes de implementar.
 
 ### Tests for User Story 4 ⚠️
 
-- [ ] T029 [P] [US4] Write `backend/tests/test_ai_errors.py` (token válido, entrada válida): PR-10 fake lanza `errors.timeout()` → 504 `TIMEOUT`; PR-11 fake lanza `errors.ia_no_disponible()` → 502 `IA_NO_DISPONIBLE`; PR-12 fake lanza `errors.respuesta_invalida()` → 502 `RESPUESTA_INVALIDA`; fake lanza `RuntimeError("secreto-interno")` → 500 `ERROR_INTERNO` y el cuerpo no contiene `secreto-interno` ni `Traceback`; en todos, el cuerpo es exactamente `{"error": {"codigo", "mensaje"}}`
-- [ ] T030 [P] [US4] Write `backend/tests/test_gemini_client.py` using `httpx.MockTransport` (no network): 200 con `choices[0].message.content = "  Texto  "` → `"Texto"`; la petición lleva `Authorization: Bearer <clave de prueba>`, `model`, `max_tokens` y dos mensajes (system, user = tastes) y nada más del usuario; `httpx.ReadTimeout` → `TIMEOUT`; `httpx.ConnectError` → `IA_NO_DISPONIBLE`; estado 429/500 → `IA_NO_DISPONIBLE`; 200 con contenido vacío, sin `choices` o cuerpo no JSON → `RESPUESTA_INVALIDA`; `GEMINI_API_KEY` vacía → `IA_NO_DISPONIBLE` sin hacer la petición
+- [X] T029 [P] [US4] Write `backend/tests/test_ai_errors.py` (token válido, entrada válida): PR-10 fake lanza `errors.timeout()` → 504 `TIMEOUT`; PR-11 fake lanza `errors.ia_no_disponible()` → 502 `IA_NO_DISPONIBLE`; PR-12 fake lanza `errors.respuesta_invalida()` → 502 `RESPUESTA_INVALIDA`; fake lanza `RuntimeError("secreto-interno")` → 500 `ERROR_INTERNO` y el cuerpo no contiene `secreto-interno` ni `Traceback`; en todos, el cuerpo es exactamente `{"error": {"codigo", "mensaje"}}`
+- [X] T030 [P] [US4] Write `backend/tests/test_gemini_client.py` using `httpx.MockTransport` (no network): 200 con `choices[0].message.content = "  Texto  "` → `"Texto"`; la petición lleva `Authorization: Bearer <clave de prueba>`, `model`, `max_tokens` y dos mensajes (system, user = tastes) y nada más del usuario; `httpx.ReadTimeout` → `TIMEOUT`; `httpx.ConnectError` → `IA_NO_DISPONIBLE`; estado 429/500 → `IA_NO_DISPONIBLE`; 200 con contenido vacío, sin `choices` o cuerpo no JSON → `RESPUESTA_INVALIDA`; `GEMINI_API_KEY` vacía → `IA_NO_DISPONIBLE` sin hacer la petición
 
 ### Implementation for User Story 4
 
-- [ ] T031 [US4] Add error mapping to `GeminiClient.recommend` in `backend/app/ai_client.py`: `httpx.TimeoutException` → `errors.timeout()`; other `httpx.HTTPError` or non-2xx status → `errors.ia_no_disponible()`; unparseable JSON, missing `choices[0].message.content`, non-string or blank content → `errors.respuesta_invalida()`; missing `GEMINI_API_KEY` → `errors.ia_no_disponible()`; never include the provider response in the error
-- [ ] T032 [US4] In `frontend/src/App.vue`, show `data.error.mensaje` for any non-200 response and, when `status === 0` or the body has no `error`, show «No se puede conectar con el servicio. Inténtalo más tarde.»; long messages wrap without horizontal scroll
+- [X] T031 [US4] Add error mapping to `GeminiClient.recommend` in `backend/app/ai_client.py`: `httpx.TimeoutException` → `errors.timeout()`; other `httpx.HTTPError` or non-2xx status → `errors.ia_no_disponible()`; unparseable JSON, missing `choices[0].message.content`, non-string or blank content → `errors.respuesta_invalida()`; missing `GEMINI_API_KEY` → `errors.ia_no_disponible()`; never include the provider response in the error
+- [X] T032 [US4] In `frontend/src/App.vue`, show `data.error.mensaje` for any non-200 response and, when `status === 0` or the body has no `error`, show «No se puede conectar con el servicio. Inténtalo más tarde.»; long messages wrap without horizontal scroll
 
 **Checkpoint**: todas las historias funcionan; `python -m pytest` en verde
 
