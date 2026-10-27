@@ -57,7 +57,7 @@ Comprobaciones manuales (PR-13, PR-16, PR-17, PR-21):
 
 Dos proyectos: frontend (raíz `app2-Musicfy/frontend`) y backend (raíz `app2-Musicfy/backend`).
 Variables en el panel. Desde la URL del frontend: un caso válido con sesión y uno de error
-(p. ej. 401 llamando al backend sin token). Anotar en `docs/despliegues.md`.
+(p. ej. 401 llamando al backend sin token). Anotar en `../docs/despliegues.md`.
 
 ## 5. AWS EC2 (PR-15, PR-23)
 

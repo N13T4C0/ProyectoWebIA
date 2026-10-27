@@ -48,7 +48,7 @@ tecnología indicada por el equipo. No queda ningún `NEEDS CLARIFICATION`.
   sustituir por un doble en pruebas. El formato OpenAI es el que fija INT-02.
 - **Alternatives considered**: SDK `google-genai` (otro formato, no el de INT-02); SDK `openai`
   apuntando a Gemini (dependencia innecesaria para una sola llamada).
-- **Nota**: `GEMINI_MODEL` es configurable; su valor por defecto (`gemini-2.5-flash`) se
+- **Nota**: `GEMINI_MODEL` es configurable; su valor por defecto (`gemini-3.5-flash-lite`, el mismo que App 1) se
   comprueba contra los modelos disponibles en el plan gratuito al implementar.
 
 ## R4. Instrucciones a la IA
@@ -67,8 +67,8 @@ tecnología indicada por el equipo. No queda ningún `NEEDS CLARIFICATION`.
 |---|---|---|---|
 | `GEMINI_API_KEY` | Sí | — | Clave privada de la API de Gemini. |
 | `GEMINI_URL` | No | `https://generativelanguage.googleapis.com/v1beta/openai/chat/completions` | Endpoint compatible con OpenAI. |
-| `GEMINI_MODEL` | No | `gemini-2.5-flash` | Modelo. |
-| `MAX_TOKENS` | No | `800` | Máximo de tokens de respuesta. |
+| `GEMINI_MODEL` | No | `gemini-3.5-flash-lite` | Modelo (el mismo que App 1). |
+| `MAX_TOKENS` | No | `600` | Máximo de tokens de respuesta (el mismo que App 1). |
 | `AI_TIMEOUT_SECONDS` | No | `25` | Tiempo máximo de espera a la IA. |
 | `MAX_CARACTERES` | No | `500` | Longitud máxima de `tastes` tras recortar. |
 | `CLERK_ISSUER` | Sí | — | Emisor de los tokens (Frontend API de Clerk, p. ej. `https://<instancia>.clerk.accounts.dev`). |

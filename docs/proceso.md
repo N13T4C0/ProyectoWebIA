@@ -64,7 +64,7 @@ Una fila por tarea. El tiempo es el dedicado por esa persona a esa tarea. En App
 | 25/10/2026 | Spec Kit con Claude Code como agente de IA. | Pendiente | Jose |
 | 25/10/2026 | La App 2 ofrece los mismos 12 géneros que la App 1. | La ERS no fija la lista, y así se pueden comparar las dos apps. | Jose Antonio Nieto |
 | 25/10/2026 | El token de Clerk se verifica con PyJWT y JWKS, no con el SDK. | Propuesta de la IA en el plan: no hace falta la clave secreta de Clerk. Pendiente de revisión por Mario. | IA / Jose Antonio Nieto|
-| 25/10/2026 | Se mantienen `gemini-2.5-flash` y `MAX_TOKENS=800`, los valores que propuso la IA. | Se revisará si aparecen respuestas vacías, porque el razonamiento del modelo consume tokens. | Jose Antonio Nieto |
+| 27/10/2026 | La App 2 usa el mismo modelo y límite que la App 1 (`gemini-3.5-flash-lite` y `MAX_TOKENS=600`), en lugar de `gemini-2.5-flash` y 800 que propuso la IA en el plan. | El modelo ya está probado en el despliegue de App 1, la comparativa es más justa y se evita que el razonamiento de `gemini-2.5-flash` consuma los tokens y deje respuestas vacías. | Jose Antonio Nieto |
 
 ## 4. Problemas encontrados
 

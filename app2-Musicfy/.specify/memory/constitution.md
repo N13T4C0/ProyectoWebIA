@@ -27,7 +27,7 @@ Sync Impact Report
 Musicfy App 2 es un recomendador musical con IA en una sola pantalla. Frontend SPA en Vue.js
 con Tailwind CSS, backend en Python con FastAPI, IA con la API de Gemini de Google y
 autenticación con Clerk. La fuente de requisitos es la ERS de App 2 (actualmente
-`app1-Musicfy/docs/ERS-app2.md`).
+`docs/ERS-app2.md` en la raíz del repositorio).
 
 ## Core Principles
 

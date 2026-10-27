@@ -8,7 +8,7 @@
 
 **Input**: User description: "Construir Musicfy App 2 según la ERS en ../app1-Musicfy/docs/ERS-app2.md. Léela entera y respeta sus requisitos (RF-01 a RF-06 y RNF), restricciones, casos de uso y criterios de aceptación. No añadas nada que no esté en la ERS."
 
-**Fuente de requisitos**: ERS de App 2, versión 0.1 (`../app1-Musicfy/docs/ERS-app2.md`). Cada
+**Fuente de requisitos**: ERS de App 2, versión 0.2 (`../docs/ERS-app2.md`). Cada
 requisito de esta especificación indica entre paréntesis el identificador de la ERS del que
 procede. Esta especificación no añade funciones que no estén en la ERS.
 
