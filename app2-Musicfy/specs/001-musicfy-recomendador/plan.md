@@ -17,7 +17,7 @@ proyectos) y en EC2 con `docker compose` (API + Caddy con HTTPS).
 
 ## Technical Context
 
-**Language/Version**: Python 3.12 (backend); JavaScript ES2022 con Node.js 20 LTS para el build
+**Language/Version**: Python 3.12 (backend); JavaScript ES2022 con Node.js 22 LTS para el build (antes 20; ver la desviación de T035 en tasks.md)
 (frontend).
 
 **Primary Dependencies**: backend: FastAPI, Pydantic v2, httpx, PyJWT[crypto], uvicorn.

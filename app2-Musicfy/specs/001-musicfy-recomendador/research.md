@@ -88,7 +88,7 @@ se añadiría solo en el backend.
 ## R6. Frontend: Clerk en la misma pantalla
 
 - **Decision**: Vue 3 + Vite + Tailwind CSS (plugin `@tailwindcss/vite`) y `@clerk/vue`
-  (`clerkPlugin`, `<SignedIn>`, `<SignedOut>`, `<SignInButton mode="modal">`, `<UserButton>`,
+  (`clerkPlugin`, `<Show when="signed-in|signed-out">` —en la v2 sustituye a `<SignedIn>` y `<SignedOut>`—, `<SignInButton mode="modal">`, `<UserButton>`,
   composable `useAuth()` para `isSignedIn` y `getToken()`). Sin `vue-router`.
 - **Rationale**: SDK oficial para Vue; el modal evita rutas de login (principio VI). `getToken()`
   se llama antes de cada envío, así el token está siempre vigente.
