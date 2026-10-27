@@ -28,7 +28,9 @@ sin token + cuerpo inválido → 401; `/health` sin token → 200.
 ```powershell
 # backend: copiar .env.example a .env y rellenar GEMINI_API_KEY, CLERK_ISSUER,
 # ALLOWED_ORIGINS=http://localhost:5173
-cd app2-Musicfy/backend; uvicorn app.main:app --reload --port 8000
+# --env-file es obligatorio: el backend no lee .env por sí solo; sin él ALLOWED_ORIGINS queda
+# vacío y CORS rechaza todo (OPTIONS 400), y sin CLERK_ISSUER todas las peticiones dan 401.
+cd app2-Musicfy/backend; uvicorn app.main:app --reload --port 8000 --env-file .env
 
 # frontend: copiar .env.example a .env con VITE_CLERK_PUBLISHABLE_KEY y
 # VITE_API_URL=http://localhost:8000

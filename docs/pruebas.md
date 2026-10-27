@@ -180,3 +180,9 @@ En todos los casos, salvo los de PR-18 a PR-20, se usa un token válido simulado
 | PR-21 | Sin sesión no se puede enviar, con sesión sí, tras cerrar sesión no, una llamada directa al backend sin token recibe 401 | Vercel y EC2 | Parcial (2026-10-27, local con `.env` real): sin token → 401 `NO_AUTORIZADO`; sin token y cuerpo no JSON → 401; token falso contra el JWKS real de Clerk → 401; el registro del servidor no contiene datos ni tokens. Faltan el navegador, Vercel y EC2 |
 | PR-22 | Desde la URL de Vercel: un caso válido con sesión y uno de error | Vercel | Pendiente |
 | PR-23 | Desde la URL HTTPS de EC2, en otro dispositivo: acceso con Clerk, un caso válido, uno de error y reinicio de los contenedores | EC2 | Pendiente |
+
+## Errores encontrados en las pruebas manuales
+
+| Fecha | Prueba | Error | Causa | Solución |
+|-------|--------|-------|-------|----------|
+| 2026-10-27 | Ejecución local (quickstart §2) | El backend arrancaba sin la configuración de `.env` y CORS rechazaba todas las peticiones del frontend (`OPTIONS` → 400) | `app/config.py` solo lee variables de entorno y no carga `.env` por sí mismo; con `uvicorn app.main:app --reload --port 8000`, `ALLOWED_ORIGINS` quedaba vacío | Arrancar con `uvicorn app.main:app --reload --port 8000 --env-file .env`; `quickstart.md` actualizado |
