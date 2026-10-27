@@ -1,0 +1,29 @@
+# Despliegue en EC2 (research.md R10): API + Caddy con HTTPS. Solo se exponen 80 y 443.
+services:
+  api:
+    build: ./backend
+    env_file: ./backend/.env
+    expose:
+      - "8000"
+    restart: unless-stopped
+
+  web:
+    build:
+      context: ./frontend
+      args:
+        VITE_CLERK_PUBLISHABLE_KEY: ${VITE_CLERK_PUBLISHABLE_KEY}
+        VITE_API_URL: ${VITE_API_URL:-}
+    environment:
+      DOMINIO: ${DOMINIO}
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - api
+    restart: unless-stopped
+    volumes:
+      # Solo los certificados TLS de Caddy; ningún dato de la aplicación.
+      - caddy_data:/data
+
+volumes:
+  caddy_data:

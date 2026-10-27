@@ -126,8 +126,7 @@ además, rechaza las peticiones sin una sesión válida de Clerk.
 Las pruebas automáticas simulan la IA y el verificador de tokens de Clerk,
 así que no gastan créditos ni necesitan cuentas reales.
 
-Los ID de prueba coinciden con los de `docs/ERS-app2.md`. Los nombres de los
-tests son provisionales hasta que se implementen.
+Los ID de prueba coinciden con los de `docs/ERS-app2.md`.
 
 ## Cómo ejecutar las pruebas
 
@@ -143,41 +142,41 @@ En todos los casos, salvo los de PR-18 a PR-20, se usa un token válido simulado
 
 | ID ERS | Situación | Resultado esperado | Test | Estado |
 |--------|-----------|--------------------|------|--------|
-| PR-01 | Se consulta `/health` sin token | Responde 200 con `status: ok` | `test_health.py` | Pendiente |
-| PR-06 | Token válido y gustos válidos | Responde 200 y consulta a la IA una sola vez | `test_recommend.py` | Pendiente |
-| PR-09 | Token válido y `tastes` con espacios al principio y al final | La IA recibe el texto sin esos espacios | `test_recommend.py` | Pendiente |
-| PR-04 | Token válido y sin campo `tastes` | Responde 422 | `test_validation.py` | Pendiente |
-| PR-02, PR-08 | Token válido y `tastes` vacío | Responde 422 y no consulta a la IA | `test_validation.py` | Pendiente |
-| PR-03 | Token válido y `tastes` solo con espacios | Responde 422 | `test_validation.py` | Pendiente |
-| PR-07 | Token válido y `tastes` con 500 caracteres | Responde 200 | `test_validation.py` | Pendiente |
-| PR-05 | Token válido y `tastes` con 501 caracteres | Responde 422 | `test_validation.py` | Pendiente |
-| PR-10 | Token válido y la IA tarda demasiado | Responde 504 con código `TIMEOUT` | `test_ai_errors.py` | Pendiente |
-| PR-11 | Token válido y la IA falla | Responde 502 con código `IA_NO_DISPONIBLE` | `test_ai_errors.py` | Pendiente |
-| PR-12 | Token válido y la IA responde algo no utilizable | Responde 502 con código `RESPUESTA_INVALIDA` | `test_ai_errors.py` | Pendiente |
-| PR-18 | Petición sin cabecera `Authorization` | Responde 401 con código `NO_AUTORIZADO` y no consulta a la IA | `test_auth.py::test_sin_token_da_401` | Pendiente |
-| PR-19 | Token inválido (firma incorrecta, mal formado o de otro emisor) | Responde 401 y no consulta a la IA | `test_auth.py::test_token_invalido_da_401` | Pendiente |
-| PR-20 | Token caducado | Responde 401 y no consulta a la IA | `test_auth.py::test_token_caducado_da_401` | Pendiente |
-| Extra | Sin token y con cuerpo inválido | Responde 401 (no 422): la sesión se comprueba antes que la entrada | `test_auth.py` | Pendiente |
-| Extra | Error inesperado en el servidor | Responde 500 `ERROR_INTERNO` sin detalles internos | `test_ai_errors.py` | Pendiente |
-| Extra | Verificador real de Clerk con claves de prueba: firma, emisor, caducidad y origen | Solo acepta tokens correctos; el resto da 401 | `test_clerk_verifier.py` | Pendiente |
-| Extra | Cliente real de Gemini con respuestas simuladas | Traduce cada fallo al código correcto y no envía datos del usuario | `test_gemini_client.py` | Pendiente |
+| PR-01 | Se consulta `/health` sin token | Responde 200 con `status: ok` | `test_health.py` | Pasa |
+| PR-06 | Token válido y gustos válidos | Responde 200 y consulta a la IA una sola vez | `test_recommend.py` | Pasa |
+| PR-09 | Token válido y `tastes` con espacios al principio y al final | La IA recibe el texto sin esos espacios | `test_recommend.py` | Pasa |
+| PR-04 | Token válido y sin campo `tastes` | Responde 422 | `test_validation.py` | Pasa |
+| PR-02, PR-08 | Token válido y `tastes` vacío | Responde 422 y no consulta a la IA | `test_validation.py` | Pasa |
+| PR-03 | Token válido y `tastes` solo con espacios | Responde 422 | `test_validation.py` | Pasa |
+| PR-07 | Token válido y `tastes` con 500 caracteres | Responde 200 | `test_validation.py` | Pasa |
+| PR-05 | Token válido y `tastes` con 501 caracteres | Responde 422 | `test_validation.py` | Pasa |
+| PR-10 | Token válido y la IA tarda demasiado | Responde 504 con código `TIMEOUT` | `test_ai_errors.py` | Pasa |
+| PR-11 | Token válido y la IA falla | Responde 502 con código `IA_NO_DISPONIBLE` | `test_ai_errors.py` | Pasa |
+| PR-12 | Token válido y la IA responde algo no utilizable | Responde 502 con código `RESPUESTA_INVALIDA` | `test_ai_errors.py` | Pasa |
+| PR-18 | Petición sin cabecera `Authorization` | Responde 401 con código `NO_AUTORIZADO` y no consulta a la IA | `test_auth.py::test_sin_token_da_401` | Pasa |
+| PR-19 | Token inválido (firma incorrecta, mal formado o de otro emisor) | Responde 401 y no consulta a la IA | `test_auth.py::test_token_invalido_da_401` | Pasa |
+| PR-20 | Token caducado | Responde 401 y no consulta a la IA | `test_auth.py::test_token_caducado_da_401` | Pasa |
+| Extra | Sin token y con cuerpo inválido | Responde 401 (no 422): la sesión se comprueba antes que la entrada | `test_auth.py` | Pasa |
+| Extra | Error inesperado en el servidor | Responde 500 `ERROR_INTERNO` sin detalles internos | `test_ai_errors.py` | Pasa |
+| Extra | Verificador real de Clerk con claves de prueba: firma, emisor, caducidad y origen | Solo acepta tokens correctos; el resto da 401 | `test_clerk_verifier.py` | Pasa |
+| Extra | Cliente real de Gemini con respuestas simuladas | Traduce cada fallo al código correcto y no envía datos del usuario | `test_gemini_client.py` | Pasa |
 
 
 ## Resultados de ejecución
 
 | Fecha | Comando | Resultado |
 |-------|---------|-----------|
-| Pendiente | Pendiente | Pendiente |
+| 2026-10-27 | `python -m pytest` (Python 3.14, Windows) | 59 pruebas, todas pasan |
 
 ## Pruebas manuales
 
 | ID ERS | Qué se comprueba | Dónde | Estado |
 |--------|------------------|-------|--------|
 | PR-13 | Petición válida con la IA real y una sesión real de Clerk: 200 con recomendaciones | Local, Vercel y EC2 | Pendiente |
-| PR-14 | La clave de la IA y las claves secretas de Clerk no están en el frontend, el repositorio, su historial ni las imágenes Docker | Repositorio e imágenes | Pendiente |
+| PR-14 | La clave de la IA y las claves secretas de Clerk no están en el frontend, el repositorio, su historial ni las imágenes Docker | Repositorio e imágenes | Parcial (2026-10-27): solo `.env.example` versionados; `.env` en `.gitignore` y en los dos `.dockerignore`; la clave de Gemini no aparece en `frontend/dist` ni en `git log -p --all`. Falta revisar las imágenes Docker |
 | PR-15 | No se conservan datos tras recargar la página y reiniciar el backend y los contenedores | Local, Docker y EC2 | Pendiente |
 | PR-16 | Formulario: géneros y texto, solo géneros, nada, doble envío y cierre de sesión con un resultado en pantalla | Navegador con F12 | Pendiente |
 | PR-17 | Accesibilidad con teclado, incluido el acceso de Clerk, y vista de 320 px | Navegador | Pendiente |
-| PR-21 | Sin sesión no se puede enviar, con sesión sí, tras cerrar sesión no, una llamada directa al backend sin token recibe 401 | Vercel y EC2 | Pendiente |
+| PR-21 | Sin sesión no se puede enviar, con sesión sí, tras cerrar sesión no, una llamada directa al backend sin token recibe 401 | Vercel y EC2 | Parcial (2026-10-27, local con `.env` real): sin token → 401 `NO_AUTORIZADO`; sin token y cuerpo no JSON → 401; token falso contra el JWKS real de Clerk → 401; el registro del servidor no contiene datos ni tokens. Faltan el navegador, Vercel y EC2 |
 | PR-22 | Desde la URL de Vercel: un caso válido con sesión y uno de error | Vercel | Pendiente |
 | PR-23 | Desde la URL HTTPS de EC2, en otro dispositivo: acceso con Clerk, un caso válido, uno de error y reinicio de los contenedores | EC2 | Pendiente |

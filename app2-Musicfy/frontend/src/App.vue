@@ -67,12 +67,12 @@ async function enviar() {
 </script>
 
 <template>
-  <main class="mx-auto flex max-w-xl flex-col gap-6 px-4 py-8">
-    <header class="flex items-center justify-between gap-4">
+  <main class="mx-auto flex w-full max-w-xl flex-col gap-6 px-4 py-8">
+    <header class="flex flex-wrap items-center justify-between gap-4">
       <h1 class="text-3xl font-bold">Musicfy</h1>
       <Show when="signed-out">
         <SignInButton mode="modal">
-          <button type="button" class="rounded border border-indigo-600 px-4 py-2 font-medium text-indigo-700">
+          <button type="button" class="rounded border border-indigo-600 px-4 py-2 font-medium text-indigo-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2">
             Iniciar sesión
           </button>
         </SignInButton>
@@ -89,7 +89,7 @@ async function enviar() {
           :key="genero"
           type="button"
           :aria-pressed="seleccionados.includes(genero)"
-          class="rounded-full border px-3 py-1 text-sm"
+          class="rounded-full border px-3 py-1 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2"
           :class="
             seleccionados.includes(genero)
               ? 'border-indigo-600 bg-indigo-600 text-white'
@@ -107,14 +107,14 @@ async function enviar() {
           id="gustos"
           v-model="texto"
           rows="4"
-          class="w-full rounded border border-gray-300 p-2"
+          class="w-full rounded border border-gray-300 p-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2"
         ></textarea>
       </div>
 
       <button
         type="submit"
         :disabled="!isSignedIn || cargando"
-        class="self-start rounded bg-indigo-600 px-4 py-2 font-medium text-white disabled:opacity-50"
+        class="self-start rounded bg-indigo-600 px-4 py-2 font-medium text-white disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2"
       >
         Recomendar
       </button>
