@@ -2,13 +2,16 @@
 
 import logging
 
-from fastapi import FastAPI, Request
+from fastapi import Depends, FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from app import errors
+from app.ai_client import get_ai_client
+from app.auth import require_session
 from app.config import get_settings
+from app.schemas import validate_tastes
 
 # Solo se registra el código de error: nunca tastes, resultado, tokens ni claves.
 logger = logging.getLogger("musicfy")
@@ -51,3 +54,16 @@ async def unexpected_error_handler(request: Request, exc: Exception) -> JSONResp
 @app.get("/health")
 async def health() -> dict:
     return {"status": "ok"}
+
+
+@app.post("/api/recommend")
+async def recommend(request: Request, _=Depends(require_session), ai=Depends(get_ai_client)) -> dict:
+    # El cuerpo no es un parámetro: así la sesión se verifica antes de validar (research.md R2).
+    max_caracteres = get_settings().MAX_CARACTERES
+    try:
+        payload = await request.json()
+    except ValueError:
+        raise errors.validacion(max_caracteres) from None
+    tastes = validate_tastes(payload, max_caracteres)
+    resultado = await ai.recommend(tastes)
+    return {"resultado": resultado}
