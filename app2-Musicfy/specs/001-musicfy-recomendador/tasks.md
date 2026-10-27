@@ -92,14 +92,14 @@ deben fallar antes de implementar.
 
 ### Tests for User Story 2 ⚠️
 
-- [ ] T021 [P] [US2] Write `backend/tests/test_auth.py`: PR-18 `test_sin_token_da_401` (sin cabecera → 401, body exactamente `{"error": {"codigo": "NO_AUTORIZADO", "mensaje": "Tu sesión no es válida o ha caducado. Inicia sesión de nuevo."}}`, IA no llamada); PR-19 `test_token_invalido_da_401` (`Bearer otro` → 401, IA no llamada); PR-20 `test_token_caducado_da_401` (fake configurado para simular caducidad → 401, IA no llamada); esquema distinto de `Bearer` → 401; `Bearer ` vacío → 401; sin token y cuerpo `{}` o no JSON → 401 (no 422) e IA no llamada
-- [ ] T022 [P] [US2] Write `backend/tests/test_clerk_verifier.py` for the real `ClerkVerifier` without network: generate an RSA key with `cryptography`, sign tokens with PyJWT (RS256, `kid`), monkeypatch `PyJWKClient.get_signing_key_from_jwt` to return the public key; cases: válido (iss correcto, exp futuro, azp permitido) → pasa; firma con otra clave → 401; `iss` distinto → 401; `exp` pasado → 401; `azp` no incluido en `ALLOWED_ORIGINS` → 401; token mal formado → 401; fallo al obtener el JWKS → 401
+- [X] T021 [P] [US2] Write `backend/tests/test_auth.py`: PR-18 `test_sin_token_da_401` (sin cabecera → 401, body exactamente `{"error": {"codigo": "NO_AUTORIZADO", "mensaje": "Tu sesión no es válida o ha caducado. Inicia sesión de nuevo."}}`, IA no llamada); PR-19 `test_token_invalido_da_401` (`Bearer otro` → 401, IA no llamada); PR-20 `test_token_caducado_da_401` (fake configurado para simular caducidad → 401, IA no llamada); esquema distinto de `Bearer` → 401; `Bearer ` vacío → 401; sin token y cuerpo `{}` o no JSON → 401 (no 422) e IA no llamada
+- [X] T022 [P] [US2] Write `backend/tests/test_clerk_verifier.py` for the real `ClerkVerifier` without network: generate an RSA key with `cryptography`, sign tokens with PyJWT (RS256, `kid`), monkeypatch `PyJWKClient.get_signing_key_from_jwt` to return the public key; cases: válido (iss correcto, exp futuro, azp permitido) → pasa; firma con otra clave → 401; `iss` distinto → 401; `exp` pasado → 401; `azp` no incluido en `ALLOWED_ORIGINS` → 401; token mal formado → 401; fallo al obtener el JWKS → 401
 
 ### Implementation for User Story 2
 
-- [ ] T023 [US2] Add Clerk access to `frontend/src/App.vue` using `@clerk/vue`: inside `<SignedOut>` a `<SignInButton mode="modal">` (botón «Iniciar sesión»); inside `<SignedIn>` a `<UserButton />`; the «Recomendar» button disabled when `!isSignedIn || cargando`; no routes or extra pages
-- [ ] T024 [US2] In `frontend/src/App.vue`, `watch(isSignedIn)` so that when it becomes `false` it clears `resultado`, `error` and `cargando` (CA-RF04-04); when the backend answers 401, show `error.mensaje` plus the invitation «Inicia sesión de nuevo para continuar.»
-- [ ] T025 [US2] Review `backend/app/auth.py` and `backend/app/main.py` against the tests T021–T022 and fix until they pass; confirm `/health` stays public and that `require_session` is the first dependency of `/api/recommend`
+- [X] T023 [US2] Add Clerk access to `frontend/src/App.vue` using `@clerk/vue`: inside `<SignedOut>` a `<SignInButton mode="modal">` (botón «Iniciar sesión»); inside `<SignedIn>` a `<UserButton />`; the «Recomendar» button disabled when `!isSignedIn || cargando`; no routes or extra pages
+- [X] T024 [US2] In `frontend/src/App.vue`, `watch(isSignedIn)` so that when it becomes `false` it clears `resultado`, `error` and `cargando` (CA-RF04-04); when the backend answers 401, show `error.mensaje` plus the invitation «Inicia sesión de nuevo para continuar.»
+- [X] T025 [US2] Review `backend/app/auth.py` and `backend/app/main.py` against the tests T021–T022 and fix until they pass; confirm `/health` stays public and that `require_session` is the first dependency of `/api/recommend`
 
 **Checkpoint**: US1 y US2 funcionan; ninguna petición sin sesión llega a la IA
 

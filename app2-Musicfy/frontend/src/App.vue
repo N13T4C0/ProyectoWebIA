@@ -1,15 +1,26 @@
 <script setup>
-import { ref } from 'vue'
-import { useAuth } from '@clerk/vue'
+import { ref, watch } from 'vue'
+import { Show, SignInButton, UserButton, useAuth } from '@clerk/vue'
 import { GENEROS, composeTastes, recommend } from './api.js'
 
-const { getToken } = useAuth()
+const { isSignedIn, getToken } = useAuth()
 
 const seleccionados = ref([])
 const texto = ref('')
 const cargando = ref(false)
 const resultado = ref('')
 const error = ref('')
+const sesionCaducada = ref(false)
+
+// Al cerrar sesión no queda nada de la consulta anterior en pantalla (CA-RF04-04).
+watch(isSignedIn, (conectado) => {
+  if (conectado === false) {
+    resultado.value = ''
+    error.value = ''
+    sesionCaducada.value = false
+    cargando.value = false
+  }
+})
 
 function alternarGenero(genero) {
   const i = seleccionados.value.indexOf(genero)
@@ -18,7 +29,7 @@ function alternarGenero(genero) {
 }
 
 async function enviar() {
-  if (cargando.value) return
+  if (cargando.value || !isSignedIn.value) return
   // Los géneros se envían en el orden de la lista, no en el de selección.
   const tastes = composeTastes(
     GENEROS.filter((g) => seleccionados.value.includes(g)),
@@ -28,11 +39,15 @@ async function enviar() {
   try {
     const token = await getToken.value()
     const { status, data } = await recommend(tastes, token)
+    // Si se cerró sesión mientras esperaba, la respuesta ya no se muestra.
+    if (!isSignedIn.value) return
     if (status === 200) {
       resultado.value = data.resultado
       error.value = ''
+      sesionCaducada.value = false
     } else {
       error.value = data?.error?.mensaje ?? ''
+      sesionCaducada.value = status === 401
     }
   } finally {
     cargando.value = false
@@ -42,7 +57,19 @@ async function enviar() {
 
 <template>
   <main class="mx-auto flex max-w-xl flex-col gap-6 px-4 py-8">
-    <h1 class="text-3xl font-bold">Musicfy</h1>
+    <header class="flex items-center justify-between gap-4">
+      <h1 class="text-3xl font-bold">Musicfy</h1>
+      <Show when="signed-out">
+        <SignInButton mode="modal">
+          <button type="button" class="rounded border border-indigo-600 px-4 py-2 font-medium text-indigo-700">
+            Iniciar sesión
+          </button>
+        </SignInButton>
+      </Show>
+      <Show when="signed-in">
+        <UserButton />
+      </Show>
+    </header>
 
     <form class="flex flex-col gap-4" @submit.prevent="enviar">
       <div role="group" aria-label="Géneros musicales" class="flex flex-wrap gap-2">
@@ -75,7 +102,7 @@ async function enviar() {
 
       <button
         type="submit"
-        :disabled="cargando"
+        :disabled="!isSignedIn || cargando"
         class="self-start rounded bg-indigo-600 px-4 py-2 font-medium text-white disabled:opacity-50"
       >
         Recomendar
@@ -86,7 +113,10 @@ async function enviar() {
       <span v-if="cargando">Buscando recomendaciones…</span>
     </p>
 
-    <p v-if="error" class="break-words text-red-700">{{ error }}</p>
+    <p v-if="error" class="break-words text-red-700">
+      {{ error }}
+      <template v-if="sesionCaducada"> Inicia sesión de nuevo para continuar.</template>
+    </p>
 
     <!-- Interpolación de texto, nunca v-html; el contenido va en línea por whitespace-pre-line. -->
     <section
