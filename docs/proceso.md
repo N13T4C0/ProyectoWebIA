@@ -29,8 +29,14 @@ Una fila por tarea. El tiempo es el dedicado por esa persona a esa tarea. En App
 | 19/10/2026 | David Molina| Análisis | ERS versiones 0.3 y 0.4, diagramas y `uso-ia.md` | Pendiente | Reconstruido |
 | 25/10/2026 | Equipo | Análisis | Revisión cruzada y ERS versión 1.0 | Pendiente | |
 | Pendiente | Pendiente | Backend | Pendiente | Pendiente | |
-| Pendiente | Pendiente | Frontend | Pendiente | Pendiente | |
-| Pendiente | Pendiente | Despliegue | Despliegue en Vercel | Pendiente | |
+| 11/10/2026 | Jose Antonio Nieto | Análisis | Estructura inicial del repositorio, `.gitignore`, `.env` y configuración inicial del backend | 0,5 h | Estimación |
+| 11/10/2026 | Jose Antonio Nieto | Frontend | Proyecto Vue + Vite con Tailwind y cliente de la API con mock y gestión de errores | 1,5 h | Estimación |
+| 11/10/2026 | Jose Antonio Nieto | Frontend | Pantalla única de estilo CRT: título WebGL, logo animado, animación de encendido y diseño | 3 h | Estimación |
+| 13/10/2026 | Jose Antonio Nieto | Frontend | Selector de géneros con botones (máximo 5) y resaltado de los artistas recomendados | 2 h | Estimación |
+| 13/10/2026 | Jose Antonio Nieto | Backend | Prompt con formato fijo y reglas de calidad para las recomendaciones | 0,5 h | Estimación |
+| 14/10/2026 | Jose Antonio Nieto | Frontend | Ajustes de diseño: portada compacta sin scroll y sin barra durante la animación | 1 h | Estimación |
+| 15/10/2026 | Jose Antonio Nieto | Despliegue | Despliegue en Vercel (`vercel.json`, ruta relativa `/api` en producción) | 1,5 h | Estimación |
+| 19/10/2026 | Jose Antonio Nieto | Despliegue | Variables de entorno de Vercel y portal de prácticas con enlace a la demo | 2 h | Estimación |
 
 ### App 2
 
@@ -55,9 +61,9 @@ Una fila por tarea. El tiempo es el dedicado por esa persona a esa tarea. En App
 | 12/10/2026 | Proyecto reorganizado dentro de `app1-Musicfy`. | Separar la App 1 de la App 2, según la estructura recomendada. | Pendiente |
 | 13/10/2026 | Las pruebas simulan la función `ask_model` en lugar de la API real. | No gastar créditos, poder provocar fallos y obtener resultados repetibles. | David Molina|
 | 13/10/2026 | Límite de 600 tokens de respuesta (`MAX_TOKENS`). | Evitar el error 402 por reserva de saldo y controlar el gasto. | Equipo |
-| 15/10/2026 | El formulario combina botones de género y texto libre en un único campo `tastes`. | Facilitar la descripción sin cambiar el contrato del backend. | Pendiente |
+| 15/10/2026 | El formulario combina botones de género y texto libre en un único campo `tastes`. | Facilitar la descripción sin cambiar el contrato del backend. | Jose Antonio Nieto |
 | 19/10/2026 | Cambio de proveedor de IA: de OpenRouter a la API de Gemini de Google. | El saldo y el límite de peticiones de OpenRouter se agotaban muy rápido; el plan gratuito de Gemini permite seguir probando. | Mario Luna Lopez |
-| 19/10/2026 | Frontend y backend desplegados en Vercel. | Despliegue obligatorio de App 1. Pendiente: uno o dos proyectos y por qué. | Pendiente |
+| 19/10/2026 | Frontend y backend desplegados en Vercel. | Despliegue obligatorio de App 1. Un único proyecto de Vercel con dos servicios (frontend y backend) y una regla que envía `/api` al backend: una sola URL y sin necesidad de CORS. | Jose Antonio Nieto |
 | 25/10/2026 | En App 2, un integrante lleva Spec Kit; los otros dos revisan la especificación y el plan antes del commit. | Pendiente | Equipo |
 | 25/10/2026 | Rotación de roles: Docker en local lo hace el responsable de pruebas y EC2 el responsable de backend. | Que todos comprendan el flujo completo, como pide el enunciado. | Equipo |
 | 25/10/2026 | La App 2 va en la carpeta `app2-Musicfy`, creada vacía con `specify init`. | Separarla de la App 1 y cumplir RES-09: un proyecto nuevo sin copiar código. | Jose Antonio Nieto |
