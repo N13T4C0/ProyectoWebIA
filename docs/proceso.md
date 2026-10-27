@@ -49,6 +49,12 @@ Una fila por tarea. El tiempo es el dedicado por esa persona a esa tarea. En App
 | 25/10/2026 | Jose Antonio Nieto | Análisis | Plan técnico (`/speckit-plan`) | 6 min | La IA tardó 1 min 58 s. Plan, investigación técnica, modelo de datos, contratos y quickstart. Resuelve PEN-02. |
 | 25/10/2026 | Jose Antonio Nieto | Análisis | Tareas (`/speckit-tasks`) | 5 min | La IA tardó 2 min 29 s. 41 tareas en 7 fases. |
 | 25/10/2026 | Jose Antonio Nieto | Revisión IA | Revisión de la constitución, la especificación, el plan y las tareas | 15 min | Comprobado contra la ERS de App 2. Sin funciones fuera de alcance. |
+| 27/10/2026 | Jose Antonio Nieto | Revisión IA | Fases 1 y 2 (`/speckit-implement`, T001–T015): preparación y base común | 15 min | La IA tardó 4 min 20 s. Usó Python 3.14 en local en vez del 3.12 del plan. |
+| 27/10/2026 | Jose Antonio Nieto | Revisión IA | Fase 3 (US1, T016–T020): recomendaciones con sesión | 5 min | La IA tardó 1 min 26 s. |
+| 27/10/2026 | Jose Antonio Nieto | Revisión IA | Fase 4 (US2, T021–T025): acceso con Clerk y 401 | 5 min | La IA tardó 1 min 43 s. Usó `<Show>` porque `@clerk/vue` 2.x ya no tiene `<SignedIn>`/`<SignedOut>`. Añadió por su cuenta descartar la respuesta si se cierra sesión durante la espera. |
+| 27/10/2026 | Jose Antonio Nieto | Revisión IA | Fases 5 y 6 (US3 y US4, T026–T032): validación y errores de la IA | 5 min | La IA tardó 1 min 40 s. 59 pruebas automáticas en verde (App 1: 12). |
+| 27/10/2026 | Jose Antonio Nieto | Revisión IA | Fase 7 (T033–T039): Docker, accesibilidad y revisión de seguridad | 10 min | Dockerfile del frontend cambiado de `node:20` a `node:22` (Node 20 sin soporte). |
+| 27/10/2026 | Jose Antonio Nieto | Pruebas | Prueba manual en local con sesión real de Clerk y Gemini (T040: PR-13, PR-16, PR-17, PR-21) | 20 min | Incluye el diagnóstico del error de CORS por no cargar `.env`. |
 | Pendiente | Pendiente | Revisión IA | Revisión de la especificación y el plan | Pendiente | |
 
 ## 3. Decisiones
@@ -71,6 +77,7 @@ Una fila por tarea. El tiempo es el dedicado por esa persona a esa tarea. En App
 | 25/10/2026 | La App 2 ofrece los mismos 12 géneros que la App 1. | La ERS no fija la lista, y así se pueden comparar las dos apps. | Jose Antonio Nieto |
 | 25/10/2026 | El token de Clerk se verifica con PyJWT y JWKS, no con el SDK. | Propuesta de la IA en el plan: no hace falta la clave secreta de Clerk. Pendiente de revisión por Mario. | IA / Jose Antonio Nieto|
 | 27/10/2026 | La App 2 usa el mismo modelo y límite que la App 1 (`gemini-3.5-flash-lite` y `MAX_TOKENS=600`), en lugar de `gemini-2.5-flash` y 800 que propuso la IA en el plan. | El modelo ya está probado en el despliegue de App 1, la comparativa es más justa y se evita que el razonamiento de `gemini-2.5-flash` consuma los tokens y deje respuestas vacías. | Jose Antonio Nieto |
+| 27/10/2026 | Se aceptan las desviaciones de la IA respecto a `tasks.md`: `<Show>` de Clerk en lugar de `<SignedIn>`/`<SignedOut>` y `node:22` en lugar de `node:20`. | El plan se había quedado desfasado respecto a las versiones reales de las librerías; las desviaciones quedan anotadas en `tasks.md`. | Jose Antonio Nieto |
 
 ## 4. Problemas encontrados
 
@@ -81,3 +88,4 @@ Una fila por tarea. El tiempo es el dedicado por esa persona a esa tarea. En App
 | 19/10/2026 | Las peticiones a la IA fallaban en el despliegue de Vercel: la app respondía que no quedaban más solicitudes. | El saldo y el límite de peticiones de OpenRouter se agotaban muy rápido. | Cambio de proveedor a la API de Gemini de Google. | Mario Luna Lopez |
 | 25/10/2026 | `git pull` descargaba los cambios pero no los aplicaba. | Había un cambio local sin commitear en `app1/backend/config.py`, archivo que en remoto se había movido a `app1-Musicfy`. | Guardar el cambio con `git stash` y aplicar los commits remotos. | Jose Antonio Nieto |
 | 25/10/2026 | `claude` no se reconocía en PowerShell. | Claude Code no estaba instalado. | Instalarlo con el instalador oficial (`install.ps1`) y reabrir la terminal. | Jose Antonio Nieto |
+| 27/10/2026 | En la prueba manual, el frontend mostraba «No se puede conectar con el servicio» y el backend respondía 400 a las peticiones `OPTIONS`. | El código generado por la IA no carga el `.env` en local, así que `ALLOWED_ORIGINS` quedaba vacío y CORS rechazaba todo. Las 59 pruebas automáticas no lo detectaban. | Arrancar con `uvicorn ... --env-file .env`; `quickstart.md` y `docs/pruebas.md` actualizados. | Jose Antonio Nieto |

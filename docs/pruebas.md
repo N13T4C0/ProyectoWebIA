@@ -172,12 +172,12 @@ En todos los casos, salvo los de PR-18 a PR-20, se usa un token válido simulado
 
 | ID ERS | Qué se comprueba | Dónde | Estado |
 |--------|------------------|-------|--------|
-| PR-13 | Petición válida con la IA real y una sesión real de Clerk: 200 con recomendaciones | Local, Vercel y EC2 | Pendiente |
+| PR-13 | Petición válida con la IA real y una sesión real de Clerk: 200 con recomendaciones | Local, Vercel y EC2 | Parcial (2026-10-27, local): con sesión real de Clerk y la API de Gemini, la pantalla muestra recomendaciones. Faltan Vercel y EC2 |
 | PR-14 | La clave de la IA y las claves secretas de Clerk no están en el frontend, el repositorio, su historial ni las imágenes Docker | Repositorio e imágenes | Parcial (2026-10-27): solo `.env.example` versionados; `.env` en `.gitignore` y en los dos `.dockerignore`; la clave de Gemini no aparece en `frontend/dist` ni en `git log -p --all`. Falta revisar las imágenes Docker |
 | PR-15 | No se conservan datos tras recargar la página y reiniciar el backend y los contenedores | Local, Docker y EC2 | Pendiente |
-| PR-16 | Formulario: géneros y texto, solo géneros, nada, doble envío y cierre de sesión con un resultado en pantalla | Navegador con F12 | Pendiente |
-| PR-17 | Accesibilidad con teclado, incluido el acceso de Clerk, y vista de 320 px | Navegador | Pendiente |
-| PR-21 | Sin sesión no se puede enviar, con sesión sí, tras cerrar sesión no, una llamada directa al backend sin token recibe 401 | Vercel y EC2 | Parcial (2026-10-27, local con `.env` real): sin token → 401 `NO_AUTORIZADO`; sin token y cuerpo no JSON → 401; token falso contra el JWKS real de Clerk → 401; el registro del servidor no contiene datos ni tokens. Faltan el navegador, Vercel y EC2 |
+| PR-16 | Formulario: géneros y texto, solo géneros, nada, doble envío y cierre de sesión con un resultado en pantalla | Navegador con F12 | Pasa (2026-10-27, local): géneros y texto, y solo géneros, devuelven recomendaciones; sin nada aparece el aviso y no se envía; el botón se desactiva durante la espera; al cerrar sesión desaparece el resultado y el botón se desactiva |
+| PR-17 | Accesibilidad con teclado, incluido el acceso de Clerk, y vista de 320 px | Navegador | Pasa (2026-10-27, local): con el tabulador se llega a todos los controles con foco visible y el género seleccionado se distingue por la marca ✓; a 320 px no hay desplazamiento horizontal |
+| PR-21 | Sin sesión no se puede enviar, con sesión sí, tras cerrar sesión no, una llamada directa al backend sin token recibe 401 | Vercel y EC2 | Parcial (2026-10-27, local con `.env` real): sin token → 401 `NO_AUTORIZADO`; sin token y cuerpo no JSON → 401; token falso contra el JWKS real de Clerk → 401; el registro del servidor no contiene datos ni tokens. En el navegador, sin sesión no se puede enviar, con sesión sí y tras cerrar sesión no. Faltan Vercel y EC2 |
 | PR-22 | Desde la URL de Vercel: un caso válido con sesión y uno de error | Vercel | Pendiente |
 | PR-23 | Desde la URL HTTPS de EC2, en otro dispositivo: acceso con Clerk, un caso válido, uno de error y reinicio de los contenedores | EC2 | Pendiente |
 

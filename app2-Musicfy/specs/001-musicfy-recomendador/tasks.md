@@ -157,7 +157,7 @@ deben fallar antes de implementar.
 - [X] T037 Accessibility pass in `frontend/src/App.vue` (RNF-04, PR-17): `focus-visible` ring on every button, textarea and Clerk button; selected genre distinguishable without color (✓ + `aria-pressed`); `max-w` single column with padding and no fixed widths so there is no horizontal scroll at 320 px
 - [X] T038 Security review (PR-14, RNF-03): search `backend/app/` for any logging of `tastes`, `resultado`, tokens or keys and remove it; confirm `.env` is ignored by `.gitignore` and both `.dockerignore`; confirm `frontend/src` only reads `VITE_CLERK_PUBLISHABLE_KEY` and `VITE_API_URL`; confirm no `v-html`, `localStorage`, `sessionStorage` or IndexedDB in `frontend/src`
 - [X] T039 Run `python -m pytest` in `backend/` and fix any failure until all tests pass
-- [ ] T040 Run the manual validation of `specs/001-musicfy-recomendador/quickstart.md` sections 2 and 3 (PR-13, PR-16, PR-17, PR-21, PR-14) and record the results in the team's test log (`../docs/pruebas.md` per the ERS)
+- [X] T040 Run the manual validation of `specs/001-musicfy-recomendador/quickstart.md` sections 2 and 3 (PR-13, PR-16, PR-17, PR-21, PR-14) and record the results in the team's test log (`../docs/pruebas.md` per the ERS)
 - [ ] T041 Deploy to Vercel (two projects, quickstart.md §4) and to EC2 (quickstart.md §5) and record URLs and the valid/error cases in `../docs/despliegues.md` (PR-22, PR-23, PR-15; resolves PEN-06)
 
 ---
