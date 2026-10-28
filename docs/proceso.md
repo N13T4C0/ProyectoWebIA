@@ -65,21 +65,22 @@ Una fila por tarea. El tiempo es el dedicado por esa persona a esa tarea. En App
 |---|---|---|---|
 | 11/10/2026 | La aplicación se llama Musicfy. | Elección del equipo. | Equipo |
 | 11/10/2026 | Repositorio estructurado en carpetas `frontend` y `backend`. | Separar las dos capas desde el principio. | Equipo |
-| Octubre de 2026 | Frontend con Vue.js y Tailwind CSS. | Pendiente | Equipo |
+| Octubre de 2026 | Frontend con Vue.js y Tailwind CSS. | Vue.js permite montar una SPA de una sola pantalla con poco código y es fácil de aprender; Tailwind CSS da un diseño cuidado y adaptable a móvil sin escribir hojas de estilo propias. | Jose Antonio Nieto |
 | 12/10/2026 | Proyecto reorganizado dentro de `app1-Musicfy`. | Separar la App 1 de la App 2, según la estructura recomendada. | Pendiente |
 | 13/10/2026 | Las pruebas simulan la función `ask_model` en lugar de la API real. | No gastar créditos, poder provocar fallos y obtener resultados repetibles. | David Molina|
 | 13/10/2026 | Límite de 600 tokens de respuesta (`MAX_TOKENS`). | Evitar el error 402 por reserva de saldo y controlar el gasto. | Equipo |
 | 15/10/2026 | El formulario combina botones de género y texto libre en un único campo `tastes`. | Facilitar la descripción sin cambiar el contrato del backend. | Jose Antonio Nieto |
 | 19/10/2026 | Cambio de proveedor de IA: de OpenRouter a la API de Gemini de Google. | El saldo y el límite de peticiones de OpenRouter se agotaban muy rápido; el plan gratuito de Gemini permite seguir probando. | Mario Luna Lopez |
 | 19/10/2026 | Frontend y backend desplegados en Vercel. | Despliegue obligatorio de App 1. Un único proyecto de Vercel con dos servicios (frontend y backend) y una regla que envía `/api` al backend: una sola URL y sin necesidad de CORS. | Jose Antonio Nieto |
-| 25/10/2026 | En App 2, un integrante lleva Spec Kit; los otros dos revisan la especificación y el plan antes del commit. | Pendiente | Equipo |
+| 25/10/2026 | En App 2, un integrante lleva Spec Kit; los otros dos revisan la especificación y el plan antes del commit. | Encaja con el reparto de App 2: Mario lleva Clerk y los despliegues, y David las pruebas y la documentación, así que el desarrollo con Spec Kit queda a Jose. La revisión de los otros dos evita que la especificación dependa del criterio de una sola persona. | Equipo |
 | 25/10/2026 | Rotación de roles: Docker en local lo hace el responsable de pruebas y EC2 el responsable de backend. | Que todos comprendan el flujo completo, como pide el enunciado. | Equipo |
 | 25/10/2026 | La App 2 va en la carpeta `app2-Musicfy`, creada vacía con `specify init`. | Separarla de la App 1 y cumplir RES-09: un proyecto nuevo sin copiar código. | Jose Antonio Nieto |
-| 25/10/2026 | Spec Kit con Claude Code como agente de IA. | Pendiente | Jose Antonio Nieto |
+| 25/10/2026 | Spec Kit con Claude Code como agente de IA. | Spec Kit tiene integración oficial con Claude Code (comandos `/speckit-*`), funciona en la terminal de VS Code en Windows y el equipo ya disponía de una cuenta de Claude. | Jose Antonio Nieto |
 | 25/10/2026 | La App 2 ofrece los mismos 12 géneros que la App 1. | La ERS no fija la lista, y así se pueden comparar las dos apps. | Jose Antonio Nieto |
 | 25/10/2026 | El token de Clerk se verifica con PyJWT y JWKS, no con el SDK. | Propuesta de la IA en el plan: no hace falta la clave secreta de Clerk. Pendiente de revisión por Mario. | IA / Jose Antonio Nieto|
 | 27/10/2026 | La App 2 usa el mismo modelo y límite que la App 1 (`gemini-3.5-flash-lite` y `MAX_TOKENS=600`), en lugar de `gemini-2.5-flash` y 800 que propuso la IA en el plan. | El modelo ya está probado en el despliegue de App 1, la comparativa es más justa y se evita que el razonamiento de `gemini-2.5-flash` consuma los tokens y deje respuestas vacías. | Jose Antonio Nieto |
 | 27/10/2026 | Se aceptan las desviaciones de la IA respecto a `tasks.md`: `<Show>` de Clerk en lugar de `<SignedIn>`/`<SignedOut>` y `node:22` en lugar de `node:20`. | El plan se había quedado desfasado respecto a las versiones reales de las librerías; las desviaciones quedan anotadas en `tasks.md`. | Jose Antonio Nieto |
+| 27/10/2026 | La App 2 se desarrolla y prueba en local con Python 3.14 y se despliega con Python 3.12, como fija el plan (`python:3.12-slim` en el `Dockerfile`). | Python 3.14 es la versión instalada en el equipo de desarrollo; no se instaló la 3.12 porque las 59 pruebas pasan igual y el código no usa nada propio de una versión. Desviación detectada y comunicada por la IA en la fase 1. | Jose Antonio Nieto |
 | 28/10/2026 | Docker en local pasa de David Molina a Mario Luna Lopez responsable del despliegue en EC2. | El despliegue en AWS EC2 requiere Docker, y los archivos de Docker ya los generó la IA con Spec Kit (fase 7, T033–T039). | Equipo |
 
 ## 4. Problemas encontrados
