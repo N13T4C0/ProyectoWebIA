@@ -28,7 +28,7 @@ export const categorias = [
         titulo: 'Spec Kit',
         subtitulo: 'App 2 · Desarrollo guiado por especificaciones',
         icono: 'spec',
-        url: null,
+        url: 'https://musicfy-app2.vercel.app/',
       },
     ],
   },

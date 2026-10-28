@@ -57,6 +57,7 @@ Una fila por tarea. El tiempo es el dedicado por esa persona a esa tarea. En App
 | 27/10/2026 | Jose Antonio Nieto | Revisión IA | Fases 5 y 6 (US3 y US4, T026–T032): validación y errores de la IA | 5 min | La IA tardó 1 min 40 s. 59 pruebas automáticas en verde (App 1: 12). |
 | 27/10/2026 | Jose Antonio Nieto | Revisión IA | Fase 7 (T033–T039): Docker, accesibilidad y revisión de seguridad | 10 min | Dockerfile del frontend cambiado de `node:20` a `node:22` (Node 20 sin soporte). |
 | 27/10/2026 | Jose Antonio Nieto | Pruebas | Prueba manual en local con sesión real de Clerk y Gemini (T040: PR-13, PR-16, PR-17, PR-21) | 20 min | Incluye el diagnóstico del error de CORS por no cargar `.env`. |
+| 28/10/2026 | Jose Antonio Nieto | Despliegue | Despliegue de la App 2 en Vercel (dos proyectos), corrección de `vercel.json` y comprobaciones PR-22 | 30 min | Primero lo iba a hacer Mario; con el plan Hobby y el repositorio privado solo despliega el propietario, así que lo hizo Jose. |
 | Pendiente | Pendiente | Revisión IA | Revisión de la especificación y el plan | Pendiente | |
 
 ## 3. Decisiones
@@ -93,3 +94,4 @@ Una fila por tarea. El tiempo es el dedicado por esa persona a esa tarea. En App
 | 25/10/2026 | `git pull` descargaba los cambios pero no los aplicaba. | Había un cambio local sin commitear en `app1/backend/config.py`, archivo que en remoto se había movido a `app1-Musicfy`. | Guardar el cambio con `git stash` y aplicar los commits remotos. | Jose Antonio Nieto |
 | 25/10/2026 | `claude` no se reconocía en PowerShell. | Claude Code no estaba instalado. | Instalarlo con el instalador oficial (`install.ps1`) y reabrir la terminal. | Jose Antonio Nieto |
 | 27/10/2026 | En la prueba manual, el frontend mostraba «No se puede conectar con el servicio» y el backend respondía 400 a las peticiones `OPTIONS`. | El código generado por la IA no carga el `.env` en local, así que `ALLOWED_ORIGINS` quedaba vacío y CORS rechazaba todo. Las 59 pruebas automáticas no lo detectaban. | Arrancar con `uvicorn ... --env-file .env`; `quickstart.md` y `docs/pruebas.md` actualizados. | Jose Antonio Nieto |
+| 28/10/2026 | En Vercel, el backend de la App 2 respondía 404 en todas las rutas, incluida `/health`. | El `vercel.json` generado por la IA redirigía todas las peticiones a `/api/index`; con el preset de FastAPI de Vercel la aplicación recibía esa ruta y no la encontraba. No se detectaba en local ni en las pruebas. | Quitar la redirección de `vercel.json` (commit `8a153a2`). | Jose Antonio Nieto |

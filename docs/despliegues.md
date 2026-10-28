@@ -53,4 +53,52 @@ Se configuran en el panel de Vercel (*Settings → Environment Variables*). Ning
 
 ## App 2
 
-Pendiente: Vercel y AWS EC2 con Docker y HTTPS (sección a cargo de Mario Luna Lopez).
+### Vercel
+
+**URL:** https://musicfy-app2.vercel.app/ (frontend) · https://musicfy-app2-api.vercel.app/ (backend)
+
+**Responsable:** Jose Antonio Nieto
+
+#### Arquitectura
+
+Dos proyectos de Vercel conectados al mismo repositorio, como fija el plan de Spec Kit:
+
+| Proyecto | Carpeta raíz | Tipo |
+|---|---|---|
+| `musicfy-app2` | `app2-Musicfy/frontend` | Vite (SPA en Vue.js con Clerk) |
+| `musicfy-app2-api` | `app2-Musicfy/backend` | FastAPI (función serverless, Python 3.12) |
+
+El frontend llama al backend por su URL completa (`VITE_API_URL`), así que el backend debe permitir el origen del frontend en CORS (`ALLOWED_ORIGINS`). Ese mismo valor se usa para comprobar el campo `azp` del token de Clerk.
+
+#### Variables de entorno
+
+| Variable | Proyecto | Uso |
+|---|---|---|
+| `GEMINI_API_KEY` | Backend | Clave de la API de Gemini (secreta). |
+| `GEMINI_MODEL` | Backend | Modelo de IA (`gemini-3.5-flash-lite`). |
+| `MAX_TOKENS` | Backend | Máximo de tokens de respuesta (600). |
+| `CLERK_ISSUER` | Backend | Emisor de los tokens de Clerk; el backend obtiene de él las claves públicas (JWKS). |
+| `ALLOWED_ORIGINS` | Backend | Orígenes permitidos: la URL del frontend en Vercel (y `http://localhost:5173` para pruebas). |
+| `VITE_CLERK_PUBLISHABLE_KEY` | Frontend | Clave publicable de Clerk (es pública). |
+| `VITE_API_URL` | Frontend | URL del backend en Vercel, sin `/` final. |
+
+`GEMINI_URL`, `AI_TIMEOUT_SECONDS`, `MAX_CARACTERES` y `CLERK_JWKS_URL` usan su valor por defecto.
+
+#### Pasos para desplegar
+
+1. *Add New → Project*, importar `N13T4C0/ProyectoWebIA` y elegir como *Root Directory* `app2-Musicfy/backend` (Vercel detecta FastAPI). Añadir las variables del backend y desplegar. Comprobar que `/health` responde `{"status":"ok"}`.
+2. Repetir con *Root Directory* `app2-Musicfy/frontend` (Vercel detecta Vite), con las variables del frontend.
+3. Si la URL del frontend cambia, actualizar `ALLOWED_ORIGINS` en el backend y volver a desplegarlo (*Redeploy*).
+
+**Problema encontrado:** el `vercel.json` del backend que generó la IA redirigía todas las rutas a `/api/index`, y con el preset de FastAPI la aplicación respondía 404 en todas las rutas. Se quitó la redirección (commit `8a153a2`).
+
+#### Comprobaciones
+
+| Fecha | Caso | Cómo | Resultado | Evidencia |
+|---|---|---|---|---|
+| 28/10/2026 | Válido | Con sesión de Clerk iniciada: géneros Pop y Electrónica. | 200: la pantalla muestra las recomendaciones. | `evidencias/app2-vercel-valido.png` |
+| 28/10/2026 | Error | `POST /api/recommend` directo al backend, sin cabecera `Authorization`. | 401 `NO_AUTORIZADO` sin consultar a la IA. | `evidencias/app2-vercel-error.png` |
+
+### AWS EC2
+
+Pendiente: Docker, HTTPS, puertos y reinicio de contenedores (a cargo de Mario Luna Lopez).
