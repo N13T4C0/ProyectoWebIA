@@ -42,6 +42,8 @@ El texto completo está en `SYSTEM_PROMPT`, dentro de `backend/ai_client.py`. El
 
 Se mantiene una única API de IA en todo momento, como exige el enunciado: el cambio sustituye un proveedor por otro.
 
+La App 2 usa el mismo proveedor, modelo y límites que la App 1. En el plan de Spec Kit, la IA propuso `gemini-2.5-flash` con `MAX_TOKENS=800`; el 27/10/2026 el equipo lo cambió por `gemini-3.5-flash-lite` con 600, porque ese modelo ya estaba probado en el despliegue de App 1, la comparativa es más justa y se evita que el razonamiento de `gemini-2.5-flash` consuma los tokens y deje respuestas vacías.
+
 ### Incidencias
 
 | Fecha | Problema | Causa | Solución |
@@ -59,3 +61,7 @@ El enunciado pide registrar qué herramientas de IA se han usado, para qué, qu�
 | 13/10/2026 | David | Claude (chat) | Diagnosticar el error 502 al llamar a OpenRouter. | Se aceptó limitar `max_tokens`. | Script de diagnóstico y prueba real en `/docs`. |
 | 15/10/2026 | David | Claude (chat) | Borrador de la ERS a partir del código y de las pruebas. | Se adaptaron RF-01, DAT-01, IU-01 y RNF-04 al formulario real; se corrigió el ancho de RNF-04 a 320 px. | Revisión del equipo y comprobaciones con F12 en el navegador. |
 | 19/10/2026 | David | Claude (chat) | Diagramas de casos de uso y de actividad en Mermaid. | Se aceptaron ambos diagramas. | Revisión de que coinciden con el comportamiento real de la app. |
+| 25/10/2026 | David | Claude (chat) | Borrador de la ERS de App 2 a partir de la ERS de App 1. | Se aceptó la estructura; se añadieron RF-06, RNF-05 y el flujo de acceso no autorizado. | Revisión contra el enunciado y la plantilla. |
+| 25/10/2026 | Jose Antonio | Spec Kit 1.2.4.dev0 con Claude Code | Constitución, especificación, plan técnico y tareas de App 2. | Se aceptaron tras revisarlos: sin funciones fuera de alcance. La verificación con PyJWT y JWKS, propuesta por la IA, queda pendiente de revisión por Mario. | Revisión contra la ERS de App 2 (15 min). |
+| 26/10/2026 | David | Claude (chat) | Revisar `spec.md` y `tasks.md` contra la ERS de App 2. | Se detectó que el plan usaba otro modelo y otro límite de tokens que la App 1. | Comparación manual de los documentos; ERS de App 2 actualizada a la versión 0.2. |
+| 27/10/2026 | Jose Antonio | Claude Code (`/speckit-implement`) | Implementar las tareas T001 a T039: backend, frontend, Clerk, Docker y 59 pruebas. | Se aceptaron las desviaciones `<Show>` de Clerk, `node:22` y Python 3.14. Se rechazó el modelo propuesto. Se corrigió el arranque local, porque el código generado no cargaba `.env`. | Revisión de cada fase, 59 pruebas en verde y prueba manual en local con Clerk y Gemini reales (T040). |

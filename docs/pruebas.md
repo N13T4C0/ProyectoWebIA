@@ -82,7 +82,7 @@ era OpenRouter; desde entonces es la API de Gemini de Google.
   - En los archivos del proyecto solo aparece en `backend/.env`, que está excluido por `.gitignore`.
   - `git ls-files` solo incluye `backend/.env.example`.
   - `git log --all -p -S "sk-or"` no devuelve resultados: la clave nunca se ha subido al repositorio.
-- 19/10/2026 (tras el cambio a Gemini): búsqueda de la clave de la API de Gemini (`AI_API_KEY`) con los mismos pasos.
+- 26/10/2026 (tras el cambio a Gemini): búsqueda de `AIza`, el inicio de las claves de Gemini. Solo aparece en `backend/.env`, excluido por `.gitignore`, y `git log --all -p -S "AIza"` no devuelve resultados: la clave nunca se ha subido.
 
 ### PR-15. No se conservan datos
 

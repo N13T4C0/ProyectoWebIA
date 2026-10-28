@@ -19,6 +19,7 @@
 |---|---|---|---|
 | 0.1 | 25/10/2026 | David | Primera versión, a partir de la ERS de App 1 (versión 1.0). Se añaden la autenticación con Clerk (RF-06, RNF-05), el despliegue en Vercel y en AWS EC2 con Docker, el flujo alternativo de acceso no autorizado y la verificación del token antes de la llamada a la IA. |
 | 0.2 | 26/10/2026 | David | Revisión contra spec.md y tasks.md de Spec Kit. FUE-08 completada; INT-04 e INT-05 con las variables de Clerk; PEN-01 y PEN-04 resueltos; PEN-02 y PEN-05 parciales. |
+ 0.3 | 27/10/2026 | David | Tests de App 2 implementados: PEN-05 resuelto y sección 8 con los nombres definitivos; INT-04 e INT-05 con las variables de Clerk. |
 
 ## 1. Introducción
 
@@ -393,8 +394,8 @@ La pantalla tiene cinco estados: **sin sesión** (acceso de Clerk visible y env�
 | INT-01 | Backend de Musicfy (desde el frontend) | Envío: `{"tastes": "..."}` y cabecera `Authorization: Bearer <token>`. Respuesta: `{"resultado": "..."}` o `{"error": {"codigo": "...", "mensaje": "..."}}`. | Ambas, en cada envío del formulario. | HTTPS `POST /api/recommend` con JSON. Códigos: 200, 401, 422, 500, 502 y 504. CORS permite la cabecera `Authorization` desde los orígenes del frontend. | El frontend muestra el mensaje de error recibido en la misma pantalla. |
 | INT-02 | API de Gemini de Google (desde el backend) | Envío: modelo, instrucciones del recomendador, texto del usuario y máximo de tokens. Respuesta: texto generado. | Ambas, una vez por envío autenticado y válido. | HTTPS con JSON en el formato compatible con OpenAI. Clave en la cabecera `Authorization`, leída de `GEMINI_API_KEY`. Dirección configurable con `GEMINI_URL`, modelo con `GEMINI_MODEL` y máximo de tokens con `MAX_TOKENS`. | Tiempo superado: 504. Error del proveedor o de conexión: 502. Respuesta sin texto: 502. |
 | INT-03 | Comprobación de estado (técnica) | Respuesta: `{"status": "ok", ...}` | Salida, cuando se consulta. | HTTP `GET /health`, sin autenticación. | No aplica: es un endpoint técnico sin interfaz de usuario. |
-| INT-04 | Clerk (desde el frontend) | Inicio y cierre de sesión; obtención del token de sesión. | Ambas, al iniciar o cerrar sesión y antes de cada envío. | SDK oficial de Clerk compatible con Vue, con la clave publishable. Pendiente: nombre de la variable en el frontend. | Si Clerk no responde, no se puede iniciar sesión y el formulario no permite enviar. |
-| INT-05 | Clerk (desde el backend) | Claves públicas del emisor para verificar los tokens. | Entrada, cuando el backend verifica un token. | SDK oficial o JWKS del emisor. Pendiente: variables de configuración (emisor o URL de JWKS). | Si no se puede verificar el token, el backend responde 401 y no consulta a la IA. |
+| INT-04 | Clerk (desde el frontend) | Inicio y cierre de sesión; obtención del token de sesión. | Ambas, al iniciar o cerrar sesión y antes de cada envío. | SDK oficial de Clerk compatible con Vue, con la clave publishable. Paquete @clerk/vue; clave en VITE_CLERK_PUBLISHABLE_KEY. | Si Clerk no responde, no se puede iniciar sesión y el formulario no permite enviar. |
+| INT-05 | Clerk (desde el backend) | Claves públicas del emisor para verificar los tokens. | Entrada, cuando el backend verifica un token. | PyJWT con el JWKS del emisor; variables CLERK_ISSUER y CLERK_JWKS_URL. | Si no se puede verificar el token, el backend responde 401 y no consulta a la IA. |
 
 ## 7. Casos de uso o escenarios de usuario
 
@@ -492,7 +493,7 @@ flowchart TD
 
 ## 8. Verificación y trazabilidad
 
-Las pruebas automáticas se ejecutan con `python -m pytest` en el backend de App 2. Simulan la IA y el verificador de tokens de Clerk, y no consultan servicios reales. Los resultados de las pruebas automáticas y manuales se registran en `docs/pruebas.md`. Los nombres de los tests de App 2 son provisionales hasta que se implementen.
+Las pruebas automáticas se ejecutan con `python -m pytest` en el backend de App 2. Simulan la IA y el verificador de tokens de Clerk, y no consultan servicios reales. Los resultados de las pruebas automáticas y manuales se registran en `docs/pruebas.md`. 
 
 | Requisito | Objetivo o necesidad de origen | Criterio de aceptación | ID de prueba | Método y datos de comprobación | Resultado esperado |
 |---|---|---|---|---|---|
@@ -509,9 +510,9 @@ Las pruebas automáticas se ejecutan con `python -m pytest` en el backend de App
 | RF-05 | OBJ-03 | CA-RF05-01 | PR-10 | Test de IA lenta simulada. | 504 con `TIMEOUT`. |
 | RF-05 | OBJ-03 | CA-RF05-02 | PR-11 | Test de IA que falla. | 502 con `IA_NO_DISPONIBLE`. |
 | RF-05 | OBJ-03 | CA-RF05-03 | PR-12 | Test de respuesta no utilizable. | 502 con `RESPUESTA_INVALIDA`. |
-| RF-06 | OBJ-05 | CA-RF06-01 | PR-18 | Test: petición sin cabecera `Authorization` (nombre provisional `test_sin_token_da_401`). | 401 con `NO_AUTORIZADO`; la IA simulada no se llama. |
-| RF-06 | OBJ-05 | CA-RF06-02 | PR-19 | Test: el verificador simulado rechaza el token (nombre provisional `test_token_invalido_da_401`). | 401; la IA simulada no se llama. |
-| RF-06 | OBJ-05 | CA-RF06-03 | PR-20 | Test: el verificador simulado indica token caducado (nombre provisional `test_token_caducado_da_401`). | 401; la IA simulada no se llama. |
+| RF-06 | OBJ-05 | CA-RF06-01 | PR-18 | Test: petición sin cabecera `Authorization` (`test_sin_token_da_401`). | 401 con `NO_AUTORIZADO`; la IA simulada no se llama. |
+| RF-06 | OBJ-05 | CA-RF06-02 | PR-19 | Test: el verificador simulado rechaza el token (`test_token_invalido_da_401`). | 401; la IA simulada no se llama. |
+| RF-06 | OBJ-05 | CA-RF06-03 | PR-20 | Test: el verificador simulado indica token caducado (`test_token_caducado_da_401`). | 401; la IA simulada no se llama. |
 | RF-06 | OBJ-05 | CA-RF06-04 | PR-06 | El mismo test de PR-06, con token válido simulado. | 200. |
 | RF-06 | OBJ-05 | CA-RF06-05 | PR-21 | Prueba manual con Clerk real: abrir sin sesión, iniciar sesión, consultar, cerrar sesión; y una llamada directa al backend sin token (por ejemplo, desde `/docs` o con una herramienta HTTP). | Sin sesión no se puede enviar; con sesión funciona; tras cerrar sesión no; la llamada directa sin token recibe 401. |
 | RNF-01 | OBJ-04 | Sección 4 | PR-14 | Inspección del frontend, del paquete compilado, del repositorio, de su historial y de las imágenes Docker. | Las claves privadas no aparecen; solo la clave publishable de Clerk en el frontend. |
@@ -532,7 +533,7 @@ La prueba técnica PR-01 (`GET /health`) comprueba que el backend responde sin n
 | PEN-02 | Crear la aplicación de Clerk, configurar los orígenes de local, Vercel y EC2, y definir las variables de configuración del frontend y del backend. | RF-06, INT-04, INT-05, DEP-04 | Responsable de despliegues | 26/10/2026 | Parcial 26/10/2026: variables definidas (CLERK_ISSUER, CLERK_JWKS_URL y VITE_CLERK_PUBLISHABLE_KEY). Pendiente: crear la aplicación de Clerk y configurar los orígenes. |
 | PEN-03 | Confirmar con el docente el acceso a AWS, la región, el presupuesto y el nombre de dominio para HTTPS. | RES-07, RES-11, DEP-05 | Responsable de despliegues | Pendiente | Pendiente |
 | PEN-04 | Confirmar el código de error de autenticación (`NO_AUTORIZADO`) y el texto de su mensaje. | RF-06, DAT-03 | Equipo | 26/10/2026 | Resuelto 26/10/2026: código NO_AUTORIZADO con el mensaje «Tu sesión no es válida o ha caducado. Inicia sesión de nuevo.» (contracts/api.md). |
-| PEN-05 | Confirmar los nombres definitivos de los tests de App 2 y actualizar la sección 8. | Sección 8 | Responsable de pruebas | Pendiente | Parcial 26/10/2026: nombres de PR-18 a PR-20 confirmados en tasks.md (T021). Resto pendiente de la implementación. |
+| PEN-05 | Confirmar los nombres definitivos de los tests de App 2 y actualizar la sección 8. | Sección 8 | Responsable de pruebas | 28/10/2026 | Resuelto 27/10/2026: tests implementados y en verde (59); nombres en docs/pruebas.md. |
 | PEN-06 | Anotar las URL de Vercel y de EC2 de App 2 cuando estén desplegadas. | RES-07, OBJ-06 | Responsable de despliegues | Pendiente | Pendiente |
 | PEN-07 | Revisión cruzada de esta ERS por los tres integrantes. | Todos | Equipo | Pendiente | Pendiente |
 

@@ -10,7 +10,7 @@ Cada integrante añade sus propias entradas. Las que se reconstruyen después de
 |---|---|---|
 | Mario Luna Lopez | Backend: FastAPI, validación de la entrada con Pydantic, conexión con la IA (OpenRouter y después Gemini), tratamiento de errores (422, 502, 504)  | Despliegues: aplicación de Clerk, App 2 en Vercel y en AWS EC2 con HTTPS; documentación en `despliegues.md`. Revisión del plan técnico de Spec Kit. |
 | Jose Antonio Nieto Perez | Frontend: SPA en Vue.js con Tailwind CSS, formulario con botones de género y texto libre, estados de espera, resultado y error, y y despliegue en Vercel. | Desarrollo de la App 2 con Spec Kit: constitución, especificación, plan, tareas e implementación con el agente de IA, incluida la integración de Clerk en la misma pantalla. |
-| David Molina Castillo | Pruebas con pytest y mocks, capa de IA, ERS y presentación | Pruebas, ERS de App 2, Docker en local, documentación (`uso-ia.md`, `comparativa.md`) y presentación |
+| David Molina Castillo | Pruebas con pytest y mocks, capa de IA, ERS y presentación |Pruebas, ERS de App 2, documentación (`uso-ia.md`, `comparativa.md`) y presentación|
 
 ## 2. Registro de tiempos
 
@@ -22,12 +22,12 @@ Una fila por tarea. El tiempo es el dedicado por esa persona a esa tarea. En App
 
 | Fecha | Integrante | Fase | Tarea | Tiempo | Observaciones |
 |---|---|---|---|---|---|
-| 11/10/2026 | David Molina | Pruebas | Plan de casos de prueba (`docs/pruebas.md`) | Pendiente | Reconstruido |
-| 12-13/10/2026 | David Molina | Pruebas | Tests con pytest y mocks (12 tests) | Pendiente | Reconstruido |
-| 13/10/2026 | David Molina | Backend | Diagnóstico del error 402 y límite de `MAX_TOKENS` | Pendiente | Reconstruido |
-| 15/10/2026 | David Molina | Análisis | ERS de App 1 (versiones 0.1 y 0.2) y pruebas manuales PR-14 a PR-17 | Pendiente | Reconstruido |
-| 19/10/2026 | David Molina| Análisis | ERS versiones 0.3 y 0.4, diagramas y `uso-ia.md` | Pendiente | Reconstruido |
-| 25/10/2026 | Equipo | Análisis | Revisión cruzada y ERS versión 1.0 | Pendiente | |
+| 11/10/2026 | David Molina | Pruebas | Plan de casos de prueba (`docs/pruebas.md`) | 1 h | Reconstruido. Estimación. Casos sacados de los límites acordados (500 caracteres, 25 s) y de los códigos de error. |
+| 12-13/10/2026 | David Molina | Pruebas | Tests con pytest y mocks (12 tests) | 4 h | Reconstruido. Estimación. Incluye aprender pytest y los mocks de `ask_model` y romper tests a propósito para entender cada comprobación. |
+| 13/10/2026 | David Molina | Backend | Diagnóstico del error 402 y límite de `MAX_TOKENS` | 1,5 h | Reconstruido. Estimación. Script de diagnóstico para ver el código real de OpenRouter. |
+| 15/10/2026 | David Molina | Análisis | ERS de App 1 (versiones 0.1 y 0.2) y pruebas manuales PR-14 a PR-17 | 4 h | Reconstruido. Estimación. Pruebas manuales con F12 en el navegador. |
+| 19/10/2026 | David Molina | Análisis | ERS versiones 0.3 y 0.4, diagramas y `uso-ia.md` | 3 h | Reconstruido. Estimación. Diagramas de casos de uso, actividad y secuencia en Mermaid. |
+| 25/10/2026 | Equipo | Análisis | Revisión cruzada y ERS versión 1.0 | 1.5 h | |
 | Pendiente | Pendiente | Backend | Pendiente | Pendiente | |
 | 11/10/2026 | Jose Antonio Nieto | Análisis | Estructura inicial del repositorio, `.gitignore`, `.env` y configuración inicial del backend | 0,5 h | Estimación |
 | 11/10/2026 | Jose Antonio Nieto | Frontend | Proyecto Vue + Vite con Tailwind y cliente de la API con mock y gestión de errores | 1,5 h | Estimación |
@@ -42,7 +42,9 @@ Una fila por tarea. El tiempo es el dedicado por esa persona a esa tarea. En App
 
 | Fecha | Integrante | Fase | Tarea | Tiempo | Observaciones |
 |---|---|---|---|---|---|
-| 25/10/2026 | David Molina | Análisis | Borrador de `docs/ERS-app2.md` | Pendiente | |
+| 25/10/2026 | David Molina | Análisis | Borrador de `docs/ERS-app2.md` (versión 0.1) | 1.5 h | Estimación. A partir de la ERS de App 1, con RF-06, RNF-05 y el flujo de acceso no autorizado. |
+| 26/10/2026 | David Molina | Revisión IA | Revisión de `spec.md` y `tasks.md` contra la ERS de App 2 (versión 0.2) |  30 min | Estimación. Detecta que el plan usa otro modelo y otro límite de tokens que la App 1. Se mueve `docs/` a la raíz del repositorio. |
+| 27-28/10/2026 | David Molina | Documentación | Datos de App 2 en `uso-ia.md` y `comparativa.md`, ERS de App 2 versión 0.3 | 1 h | Estimación. |
 | 25/10/2026 | Jose Antonio Nieto | Análisis | Inicializar `app2-Musicfy` con Spec Kit e instalar Claude Code | 10 min | Spec Kit 1.2.4.dev0, integración con Claude Code y scripts de PowerShell. |
 | 25/10/2026 | Jose Antonio Nieto | Análisis | Constitución (`/speckit-constitution`) | 5 min | Seis principios a partir de la ERS. Deja PEN-02 y PEN-04 como pendientes. |
 | 25/10/2026 | Jose Antonio Nieto | Análisis | Especificación (`/speckit-specify`) | 5 min | La IA tardó 1 min 22 s. 4 historias de usuario y 29 requisitos trazados a la ERS. No hizo falta `/speckit-clarify`. |
@@ -73,11 +75,12 @@ Una fila por tarea. El tiempo es el dedicado por esa persona a esa tarea. En App
 | 25/10/2026 | En App 2, un integrante lleva Spec Kit; los otros dos revisan la especificación y el plan antes del commit. | Pendiente | Equipo |
 | 25/10/2026 | Rotación de roles: Docker en local lo hace el responsable de pruebas y EC2 el responsable de backend. | Que todos comprendan el flujo completo, como pide el enunciado. | Equipo |
 | 25/10/2026 | La App 2 va en la carpeta `app2-Musicfy`, creada vacía con `specify init`. | Separarla de la App 1 y cumplir RES-09: un proyecto nuevo sin copiar código. | Jose Antonio Nieto |
-| 25/10/2026 | Spec Kit con Claude Code como agente de IA. | Pendiente | Jose |
+| 25/10/2026 | Spec Kit con Claude Code como agente de IA. | Pendiente | Jose Antonio Nieto |
 | 25/10/2026 | La App 2 ofrece los mismos 12 géneros que la App 1. | La ERS no fija la lista, y así se pueden comparar las dos apps. | Jose Antonio Nieto |
 | 25/10/2026 | El token de Clerk se verifica con PyJWT y JWKS, no con el SDK. | Propuesta de la IA en el plan: no hace falta la clave secreta de Clerk. Pendiente de revisión por Mario. | IA / Jose Antonio Nieto|
 | 27/10/2026 | La App 2 usa el mismo modelo y límite que la App 1 (`gemini-3.5-flash-lite` y `MAX_TOKENS=600`), en lugar de `gemini-2.5-flash` y 800 que propuso la IA en el plan. | El modelo ya está probado en el despliegue de App 1, la comparativa es más justa y se evita que el razonamiento de `gemini-2.5-flash` consuma los tokens y deje respuestas vacías. | Jose Antonio Nieto |
 | 27/10/2026 | Se aceptan las desviaciones de la IA respecto a `tasks.md`: `<Show>` de Clerk en lugar de `<SignedIn>`/`<SignedOut>` y `node:22` en lugar de `node:20`. | El plan se había quedado desfasado respecto a las versiones reales de las librerías; las desviaciones quedan anotadas en `tasks.md`. | Jose Antonio Nieto |
+| 28/10/2026 | Docker en local pasa de David Molina a Mario Luna Lopez responsable del despliegue en EC2. | El despliegue en AWS EC2 requiere Docker, y los archivos de Docker ya los generó la IA con Spec Kit (fase 7, T033–T039). | Equipo |
 
 ## 4. Problemas encontrados
 
