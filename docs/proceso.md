@@ -27,7 +27,7 @@ Una fila por tarea. El tiempo es el dedicado por esa persona a esa tarea. En App
 | 13/10/2026 | David Molina | Backend | Diagnóstico del error 402 y límite de `MAX_TOKENS` | 1,5 h | Reconstruido. Estimación. Script de diagnóstico para ver el código real de OpenRouter. |
 | 15/10/2026 | David Molina | Análisis | ERS de App 1 (versiones 0.1 y 0.2) y pruebas manuales PR-14 a PR-17 | 4 h | Reconstruido. Estimación. Pruebas manuales con F12 en el navegador. |
 | 19/10/2026 | David Molina | Análisis | ERS versiones 0.3 y 0.4, diagramas y `uso-ia.md` | 3 h | Reconstruido. Estimación. Diagramas de casos de uso, actividad y secuencia en Mermaid. |
-| 25/10/2026 | Equipo | Análisis | Revisión cruzada y ERS versión 1.0 | 1.5 h | |
+| 25/10/2026 | Equipo | Análisis | Revisión cruzada y ERS versión 1.0 | 1,5 h | |
 | Pendiente | Pendiente | Backend | Pendiente | Pendiente | |
 | 11/10/2026 | Jose Antonio Nieto | Análisis | Estructura inicial del repositorio, `.gitignore`, `.env` y configuración inicial del backend | 0,5 h | Estimación |
 | 11/10/2026 | Jose Antonio Nieto | Frontend | Proyecto Vue + Vite con Tailwind y cliente de la API con mock y gestión de errores | 1,5 h | Estimación |
@@ -66,7 +66,7 @@ Una fila por tarea. El tiempo es el dedicado por esa persona a esa tarea. En App
 | 11/10/2026 | La aplicación se llama Musicfy. | Elección del equipo. | Equipo |
 | 11/10/2026 | Repositorio estructurado en carpetas `frontend` y `backend`. | Separar las dos capas desde el principio. | Equipo |
 | Octubre de 2026 | Frontend con Vue.js y Tailwind CSS. | Vue.js permite montar una SPA de una sola pantalla con poco código y es fácil de aprender; Tailwind CSS da un diseño cuidado y adaptable a móvil sin escribir hojas de estilo propias. | Jose Antonio Nieto |
-| 12/10/2026 | Proyecto reorganizado dentro de `app1-Musicfy`. | Separar la App 1 de la App 2, según la estructura recomendada. | Pendiente |
+| 12/10/2026 | Proyecto reorganizado dentro de `app1-Musicfy`. | Separar la App 1 de la App 2, según la estructura recomendada. | Jose Antonio Nieto |
 | 13/10/2026 | Las pruebas simulan la función `ask_model` en lugar de la API real. | No gastar créditos, poder provocar fallos y obtener resultados repetibles. | David Molina|
 | 13/10/2026 | Límite de 600 tokens de respuesta (`MAX_TOKENS`). | Evitar el error 402 por reserva de saldo y controlar el gasto. | Equipo |
 | 15/10/2026 | El formulario combina botones de género y texto libre en un único campo `tastes`. | Facilitar la descripción sin cambiar el contrato del backend. | Jose Antonio Nieto |
@@ -81,7 +81,7 @@ Una fila por tarea. El tiempo es el dedicado por esa persona a esa tarea. En App
 | 27/10/2026 | La App 2 usa el mismo modelo y límite que la App 1 (`gemini-3.5-flash-lite` y `MAX_TOKENS=600`), en lugar de `gemini-2.5-flash` y 800 que propuso la IA en el plan. | El modelo ya está probado en el despliegue de App 1, la comparativa es más justa y se evita que el razonamiento de `gemini-2.5-flash` consuma los tokens y deje respuestas vacías. | Jose Antonio Nieto |
 | 27/10/2026 | Se aceptan las desviaciones de la IA respecto a `tasks.md`: `<Show>` de Clerk en lugar de `<SignedIn>`/`<SignedOut>` y `node:22` en lugar de `node:20`. | El plan se había quedado desfasado respecto a las versiones reales de las librerías; las desviaciones quedan anotadas en `tasks.md`. | Jose Antonio Nieto |
 | 27/10/2026 | La App 2 se desarrolla y prueba en local con Python 3.14 y se despliega con Python 3.12, como fija el plan (`python:3.12-slim` en el `Dockerfile`). | Python 3.14 es la versión instalada en el equipo de desarrollo; no se instaló la 3.12 porque las 59 pruebas pasan igual y el código no usa nada propio de una versión. Desviación detectada y comunicada por la IA en la fase 1. | Jose Antonio Nieto |
-| 28/10/2026 | Docker en local pasa de David Molina a Mario Luna Lopez responsable del despliegue en EC2. | El despliegue en AWS EC2 requiere Docker, y los archivos de Docker ya los generó la IA con Spec Kit (fase 7, T033–T039). | Equipo |
+| 28/10/2026 | Docker en local pasa de David Molina a Mario Luna Lopez, responsable del despliegue en EC2. | El despliegue en AWS EC2 requiere Docker, y los archivos de Docker ya los generó la IA con Spec Kit (fase 7, T033–T039). | Equipo |
 
 ## 4. Problemas encontrados
 

@@ -9,8 +9,8 @@
 | Curso y grupo | Curso de especialización en Aprendizaje automático: gestión de datos y entrenamiento |
 | Asignatura o módulo | Desarrollo de componentes software para sistemas de aprendizaje automático |
 | Docente | Francisco Manuel Matías Prados |
-| Fecha | 26/10/2026 |
-| Versión | 0.2 |
+| Fecha | 28/10/2026 |
+| Versión | 0.4 |
 | Estado | Borrador |
 
 ### Historial de cambios
@@ -19,7 +19,8 @@
 |---|---|---|---|
 | 0.1 | 25/10/2026 | David | Primera versión, a partir de la ERS de App 1 (versión 1.0). Se añaden la autenticación con Clerk (RF-06, RNF-05), el despliegue en Vercel y en AWS EC2 con Docker, el flujo alternativo de acceso no autorizado y la verificación del token antes de la llamada a la IA. |
 | 0.2 | 26/10/2026 | David | Revisión contra spec.md y tasks.md de Spec Kit. FUE-08 completada; INT-04 e INT-05 con las variables de Clerk; PEN-01 y PEN-04 resueltos; PEN-02 y PEN-05 parciales. |
- 0.3 | 27/10/2026 | David | Tests de App 2 implementados: PEN-05 resuelto y sección 8 con los nombres definitivos; INT-04 e INT-05 con las variables de Clerk. |
+| 0.3 | 27/10/2026 | David | Tests de App 2 implementados: PEN-05 resuelto y sección 8 con los nombres definitivos; INT-04 e INT-05 con las variables de Clerk. |
+| 0.4 | 28/10/2026 | David | Correcciones tras la revisión de Jose Antonio Nieto: PEN-02 actualizado (aplicación de Clerk creada), versión de FastAPI y fechas de consulta en las fuentes, navegadores probados y requisitos funcionales verificados. |
 
 ## 1. Introducción
 
@@ -104,12 +105,12 @@ Los requisitos RF-01 a RF-05 y RNF-01 a RNF-04 se conservan de la ERS de App 1 (
 | FUE-01 | Enunciado de la práctica «UD1 · Mini aplicación web con una API de IA» | Documentación técnica consultada el 06/10/2026 | Facilitado por el docente |
 | FUE-02 | Plantilla `plantillaERS.md` | Versión facilitada por el docente | Facilitada por el docente |
 | FUE-03 | Decisiones del equipo (proveedor de IA, límites y contrato) | Octubre de 2026 | `docs/uso-ia.md` |
-| FUE-04 | Documentación oficial de FastAPI | Pendiente: versión instalada en App 2 | https://fastapi.tiangolo.com |
+| FUE-04 | Documentación oficial de FastAPI | Versión 0.162.0 (App 2) | https://fastapi.tiangolo.com |
 | FUE-05 | Documentación oficial de la API de Gemini | Consultada el 19/10/2026 | https://ai.google.dev/gemini-api/docs |
 | FUE-06 | ERS de App 1 | Versión 1.0, 25/10/2026 | `docs/ERS.md` |
-| FUE-07 | Documentación de Clerk: tokens de sesión y verificación manual de JWT | Pendiente: fecha de consulta | https://clerk.com/docs/guides/sessions/session-tokens |
+| FUE-07 | Documentación de Clerk: tokens de sesión y verificación manual de JWT | Consultada el 28/10/2026 | https://clerk.com/docs/guides/sessions/session-tokens |
 | FUE-08 | Repositorio oficial de GitHub Spec Kit |  Versión 1.2.4.dev0, con Claude Code como agente| https://github.com/github/spec-kit |
-| FUE-09 | Documentación de AWS EC2 (grupos de seguridad) | Pendiente: fecha de consulta | https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-security-groups.html |
+| FUE-09 | Documentación de AWS EC2 (grupos de seguridad) | Consultada el 28/10/2026| https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-security-groups.html |
 
 ## 2. Descripción general del sistema
 
@@ -164,7 +165,7 @@ Musicfy ofrece una única función útil, compuesta por cuatro partes:
 
 | Aspecto | Descripción |
 |---|---|
-| Dispositivos y plataformas | Navegadores actuales de escritorio y móvil. Pendiente: navegadores en los que se pruebe la App 2. |
+| Dispositivos y plataformas | Navegadores actuales de escritorio y móvil. App 2 probada en Chrome, en ordenador y en la vista móvil de las herramientas de desarrollo |
 | Condiciones de uso | Requiere conexión a internet y una cuenta de Clerk. Uso puntual: una consulta cada vez. Acceso por HTTPS en ambos despliegues. |
 | Volumen esperado | Volumen de demostración académica: consultas manuales del equipo y del docente. No se establecen cifras de capacidad porque no se han medido. |
 
@@ -204,12 +205,12 @@ Musicfy ofrece una única función útil, compuesta por cuatro partes:
 
 | ID | Nombre | Prioridad | Fuente | Estado |
 |---|---|---|---|---|
-| RF-01 | Introducir los gustos musicales | Alta | FUE-01, FUE-06 | Propuesto |
-| RF-02 | Validar la entrada | Alta | FUE-01, FUE-06 | Propuesto |
-| RF-03 | Obtener recomendaciones de la IA | Alta | FUE-01, FUE-06 | Propuesto |
-| RF-04 | Mostrar el resultado en la misma pantalla | Alta | FUE-01, FUE-06 | Propuesto |
-| RF-05 | Informar de los errores del proveedor de IA | Alta | FUE-01, FUE-06 | Propuesto |
-| RF-06 | Autenticar al usuario y proteger el backend | Alta | FUE-01, FUE-07 | Propuesto |
+| RF-01 | Introducir los gustos musicales | Alta | FUE-01, FUE-06 | Validado |
+| RF-02 | Validar la entrada | Alta | FUE-01, FUE-06 | Validado |
+| RF-03 | Obtener recomendaciones de la IA | Alta | FUE-01, FUE-06 | Validado |
+| RF-04 | Mostrar el resultado en la misma pantalla | Alta | FUE-01, FUE-06 | Validado |
+| RF-05 | Informar de los errores del proveedor de IA | Alta | FUE-01, FUE-06 | Validado |
+| RF-06 | Autenticar al usuario y proteger el backend | Alta | FUE-01, FUE-07 | Validado |
 
 ### 3.2. Fichas de requisitos funcionales
 
@@ -530,12 +531,12 @@ La prueba técnica PR-01 (`GET /health`) comprueba que el backend responde sin n
 | ID | Duda o decisión pendiente | Requisitos afectados | Responsable de resolverla | Fecha prevista | Resolución |
 |---|---|---|---|---|---|
 | PEN-01 | Elegir el agente de IA que se usará con Spec Kit y anotar las versiones de Spec Kit y del agente. | RES-09, FUE-08 | Responsable de Spec Kit | 25/10/2026 | Resuelto 25/10/2026: Claude Code como agente y Spec Kit 1.2.4.dev0 (ver FUE-08). |
-| PEN-02 | Crear la aplicación de Clerk, configurar los orígenes de local, Vercel y EC2, y definir las variables de configuración del frontend y del backend. | RF-06, INT-04, INT-05, DEP-04 | Responsable de despliegues | 26/10/2026 | Parcial 26/10/2026: variables definidas (CLERK_ISSUER, CLERK_JWKS_URL y VITE_CLERK_PUBLISHABLE_KEY). Pendiente: crear la aplicación de Clerk y configurar los orígenes. |
+| PEN-02 | Crear la aplicación de Clerk, configurar los orígenes de local, Vercel y EC2, y definir las variables de configuración del frontend y del backend. | RF-06, INT-04, INT-05, DEP-04 | Responsable de despliegues | 26/10/2026 | Parcial 28/10/2026: variables definidas (CLERK_ISSUER, CLERK_JWKS_URL y VITE_CLERK_PUBLISHABLE_KEY) y aplicación de Clerk creada el 27/10/2026 por Mario, probada en local. Pendiente: añadir los orígenes de Vercel y EC2. |
 | PEN-03 | Confirmar con el docente el acceso a AWS, la región, el presupuesto y el nombre de dominio para HTTPS. | RES-07, RES-11, DEP-05 | Responsable de despliegues | Pendiente | Pendiente |
 | PEN-04 | Confirmar el código de error de autenticación (`NO_AUTORIZADO`) y el texto de su mensaje. | RF-06, DAT-03 | Equipo | 26/10/2026 | Resuelto 26/10/2026: código NO_AUTORIZADO con el mensaje «Tu sesión no es válida o ha caducado. Inicia sesión de nuevo.» (contracts/api.md). |
-| PEN-05 | Confirmar los nombres definitivos de los tests de App 2 y actualizar la sección 8. | Sección 8 | Responsable de pruebas | 28/10/2026 | Resuelto 27/10/2026: tests implementados y en verde (59); nombres en docs/pruebas.md. |
-| PEN-06 | Anotar las URL de Vercel y de EC2 de App 2 cuando estén desplegadas. | RES-07, OBJ-06 | Responsable de despliegues | Pendiente | Pendiente |
-| PEN-07 | Revisión cruzada de esta ERS por los tres integrantes. | Todos | Equipo | Pendiente | Pendiente |
+| PEN-05 | Confirmar los nombres definitivos de los tests de App 2 y actualizar la sección 8. | Sección 8 | Responsable de pruebas | 27/10/2026 | Resuelto 27/10/2026: tests implementados y en verde (59); nombres en docs/pruebas.md. |
+| PEN-06 | Anotar las URL de Vercel y de EC2 de App 2 cuando estén desplegadas. | RES-07, OBJ-06 | Responsable de despliegues | 28/10/2026 | Pendiente |
+| PEN-07 | Revisión cruzada de esta ERS por los tres integrantes. | Todos | Equipo | Pendiente | Parcial 28/10/2026: revisada por Jose Antonio. Pendiente: Mario. |
 
 ## 10. Revisión y conformidad
 
@@ -559,8 +560,8 @@ La prueba técnica PR-01 (`GET /health`) comprueba que el backend responde sin n
 | Revisor y rol | Versión revisada | Fecha | Resultado | Observaciones |
 |---|---|---|---|---|
 | Mario Luna Lopez | 0.1 | Pendiente | Pendiente | Pendiente |
-| Jose Antonio Nieto Perez | 0.1 | Pendiente | Pendiente | Pendiente |
-| David Molina Castillo | 0.1 y 0.2 | 26/10/2026 | Conforme | Borrador inicial; pendiente de ajustar tras la especificación de Spec Kit. |
+| Jose Antonio Nieto Perez | 0.3 | 28/10/2026 | Conforme | Cuadra con lo implementado. Retoques aplicados en la versión 0.4. |
+| David Molina Castillo | 0.1 a 0.4 | 28/10/2026 | Conforme | Ajustada a la implementación real de App 2. |
 
 ## Anexos
 

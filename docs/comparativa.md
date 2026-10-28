@@ -15,12 +15,12 @@ Tiempo aproximado por fase, sumando a los tres integrantes. En App 2 se incluye 
 
 | Fase | App 1 | App 2 |
 |---|---|---|
-| Análisis y requisitos (ERS / especificación de Spec Kit) | Pendiente (estimación) | 46 min: 31 min con Spec Kit (la IA tardó unos 6 min) y 15 min de revisión. Falta sumar la ERS de App 2. |
+| Análisis y requisitos (ERS / especificación de Spec Kit) | 9 h (estimación): ERS 7 h, revisión cruzada 1,5 h y estructura inicial 0,5 h | 46 min: 31 min con Spec Kit (la IA tardó unos 6 min) y 15 min de revisión. Más 2 h de ERS de App 2 y su revisión. Total: 2 h 46 min. |
 | Backend (FastAPI, validación, llamada a la IA, errores) | Pendiente (estimación), más 0,5 h del prompt | Lo genera la IA con `/speckit-implement` (incluido en la revisión). |
 | Frontend (formulario, estados, Tailwind) | 7,5 h (estimación) | Lo genera la IA con `/speckit-implement` (incluido en la revisión). |
-| Pruebas con pytest y mocks | Pendiente (estimación) | La IA genera las 59 pruebas automáticas. Prueba manual en local: 20 min. |
+| Pruebas con pytest y mocks | 5 h (estimación).| La IA genera las 59 pruebas automáticas. Prueba manual en local: 20 min. |
 | Revisión y corrección de propuestas de la IA | No aplica: App 1 se construyó manualmente | 40 min revisando las 7 fases de la implementación (la IA tardó unos 11 min en generarla). |
-| Documentación | Pendiente (estimación) | Pendiente |
+| Documentación | Incluida en Análisis (ERS y uso-ia.md) | 1 h (estimación), más despliegues.md |
 | **Total del flujo base** | **Pendiente** | **Pendiente** |
 
 **Esfuerzo separado (no se suma al flujo base):**
@@ -78,7 +78,7 @@ Qué cambio pequeño sería fácil o difícil en cada app y por qué. Son ejempl
 
 | Cambio hipotético | App 1 | App 2 |
 |---|---|---|
-|  Cambiar el modelo o el proveedor de IA | Fácil en la práctica: se hizo de OpenRouter a Gemini cambiando `config.py`, `ai_client.py` y las variables de entorno; los tests no cambiaron porque simulan `ask_model`. | Fácil: el cambio de `gemini-2.5-flash` con 800 tokens al modelo de App 1 se hizo con las variables `GEMINI_MODEL` y `MAX_TOKENS`.  | Pendiente |
+|  Cambiar el modelo o el proveedor de IA | Fácil en la práctica: se hizo de OpenRouter a Gemini cambiando `config.py`, `ai_client.py` y las variables de entorno; los tests no cambiaron porque simulan `ask_model`. | Fácil: el cambio de `gemini-2.5-flash` con 800 tokens al modelo de App 1 se hizo con las variables `GEMINI_MODEL` y `MAX_TOKENS`, sin tocar código (se cambió en `tasks.md` y `research.md` antes de implementar). | 
 | Cambiar el límite de caracteres | Fácil: variable `MAX_CARACTERES`; los tests usan ese valor y no un número fijo. | Pendiente |
 | Cambiar el texto de las instrucciones a la IA | Fácil: un único `SYSTEM_PROMPT` en `ai_client.py`. | Pendiente |
 | Añadir un nuevo código de error | Pendiente | Pendiente |
