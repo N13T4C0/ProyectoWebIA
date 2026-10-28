@@ -109,7 +109,8 @@ era OpenRouter; desde entonces es la API de Gemini de Google.
   - Grupo de géneros: `fieldset` con `legend` «Elige géneros».
   - Cuadro de texto: etiqueta visible asociada con `label for`.
   - Vista de 360 px: sin desplazamiento horizontal, también con un resultado largo.
-  - Pendiente: repetir la comprobación a 320 px, que es el ancho que fija la ERS (WCAG 2.1, criterio 1.4.10).
+- 28/10/2026 (despliegue de Vercel, vista de 320 × 700 px):
+  - Sin desplazamiento horizontal: el ancho de la página es de 320 px, ningún elemento sobresale por la derecha y tampoco con un resultado largo (cuatro recomendaciones con el género Rock). Cumple el ancho que fija la ERS (WCAG 2.1, criterio 1.4.10).
 
 ## Observaciones
 
