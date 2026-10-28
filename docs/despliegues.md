@@ -51,6 +51,27 @@ Se configuran en el panel de Vercel (*Settings → Environment Variables*). Ning
 | 28/10/2026 | Válido | En la pantalla: géneros Electrónica, Flamenco y Metal, y el texto «Me gusta la musica de los 2000s». | 200: la pantalla muestra las recomendaciones de artistas. | `evidencias/app1-vercel-valido.png` |
 | 28/10/2026 | Error | Desde la consola del navegador: `POST /api/recommend` con `{"tastes": ""}`. | 422 con `{"error": {...}}` de validación, sin consultar a la IA. | `evidencias/app1-vercel-error.png` |
 
+### Evidencia con la CLI de Vercel
+
+Comprobación hecha el 28/10/2026 con Vercel CLI 65.5.0 (Node.js 22.20.0), desde `app2-Musicfy/backend`. Vercel detecta el repositorio y enlaza el proyecto conectado a Git, que es el de la App 1 (`proyectowebia`).
+
+```
+npm install -g vercel
+vercel --version
+vercel login
+vercel link     # proyecto proyectowebia (linked by git)
+vercel env ls   # nombres de las variables; los valores salen cifrados u ocultos
+vercel ls       # despliegues de producción y su estado
+```
+
+Resultado:
+
+- `vercel env ls` muestra las siete variables del backend (`GEMINI_API_KEY`, `GEMINI_URL`, `GEMINI_MODEL`, `MAX_TOKENS`, `MAX_CARACTERES`, `AI_TIMEOUT_SECONDS` y `ALLOWED_ORIGINS`) en *Preview* y *Production*. `GEMINI_API_KEY` y `MAX_TOKENS` están como *Secret*, con el valor oculto.
+- `vercel ls` muestra los despliegues de producción en estado *Ready*. Los que aparecen como *Blocked* son commits de otros integrantes; los bloquea el plan Hobby, como se explica arriba.
+- `vercel link` crea `.vercel/` y `.env.local` (con un token temporal de Vercel). Los dos están excluidos en `.gitignore`. La CLI también añadió `.env*` al `.gitignore`; se deshizo ese cambio porque anulaba la excepción `!.env.example`.
+
+Evidencia: `evidencias/vercel-cli.png`.
+
 ## App 2
 
 ### Vercel
