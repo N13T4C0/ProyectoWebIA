@@ -23,7 +23,7 @@ El reparto completo y el registro de tiempos están en [`docs/proceso.md`](docs/
 | Cómo se hizo | A mano, de forma incremental | Proyecto nuevo guiado por GitHub Spec Kit con Claude Code |
 | Autenticación | No | Clerk, en la misma pantalla |
 | Vercel | https://proyectowebia.vercel.app/ | Frontend: https://musicfy-app2.vercel.app/ · Backend: https://musicfy-app2-api.vercel.app/ |
-| AWS EC2 (Docker + HTTPS) | No se exige | https://32-200-106-42.sslip.io/ |
+| AWS EC2 (Docker + HTTPS) | No se exige | `https://<IP pública>.sslip.io/` (AWS Academy: la sesión dura 4 h y la IP cambia al relanzar; ver [`docs/despliegues.md`](docs/despliegues.md)) |
 | Pruebas automáticas | 12 | 59 |
 
 ## Arquitectura
