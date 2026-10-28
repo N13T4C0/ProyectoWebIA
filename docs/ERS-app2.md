@@ -10,8 +10,8 @@
 | Asignatura o módulo | Desarrollo de componentes software para sistemas de aprendizaje automático |
 | Docente | Francisco Manuel Matías Prados |
 | Fecha | 28/10/2026 |
-| Versión | 0.4 |
-| Estado | Borrador |
+| Versión | 1.0 |
+| Estado | Aprobado |
 
 ### Historial de cambios
 
@@ -21,6 +21,7 @@
 | 0.2 | 26/10/2026 | David | Revisión contra spec.md y tasks.md de Spec Kit. FUE-08 completada; INT-04 e INT-05 con las variables de Clerk; PEN-01 y PEN-04 resueltos; PEN-02 y PEN-05 parciales. |
 | 0.3 | 27/10/2026 | David | Tests de App 2 implementados: PEN-05 resuelto y sección 8 con los nombres definitivos; INT-04 e INT-05 con las variables de Clerk. |
 | 0.4 | 28/10/2026 | David | Correcciones tras la revisión de Jose Antonio Nieto: PEN-02 actualizado (aplicación de Clerk creada), versión de FastAPI y fechas de consulta en las fuentes, navegadores probados y requisitos funcionales verificados. |
+| 1.0 | 28/10/2026 | Mario Luna, Jose Antonio Nieto, David Molina | Versión 1.0 definitiva: orígenes de Clerk y URLs de Vercel y EC2 confirmadas (PEN-02, PEN-06), entorno AWS definido (PEN-03), todos los requisitos validados y revisión cruzada completada por los tres integrantes. |
 
 ## 1. Introducción
 
@@ -531,12 +532,12 @@ La prueba técnica PR-01 (`GET /health`) comprueba que el backend responde sin n
 | ID | Duda o decisión pendiente | Requisitos afectados | Responsable de resolverla | Fecha prevista | Resolución |
 |---|---|---|---|---|---|
 | PEN-01 | Elegir el agente de IA que se usará con Spec Kit y anotar las versiones de Spec Kit y del agente. | RES-09, FUE-08 | Responsable de Spec Kit | 25/10/2026 | Resuelto 25/10/2026: Claude Code como agente y Spec Kit 1.2.4.dev0 (ver FUE-08). |
-| PEN-02 | Crear la aplicación de Clerk, configurar los orígenes de local, Vercel y EC2, y definir las variables de configuración del frontend y del backend. | RF-06, INT-04, INT-05, DEP-04 | Responsable de despliegues | 26/10/2026 | Parcial 28/10/2026: variables definidas (CLERK_ISSUER, CLERK_JWKS_URL y VITE_CLERK_PUBLISHABLE_KEY) y aplicación de Clerk creada el 27/10/2026 por Mario, probada en local. Pendiente: añadir los orígenes de Vercel y EC2. |
-| PEN-03 | Confirmar con el docente el acceso a AWS, la región, el presupuesto y el nombre de dominio para HTTPS. | RES-07, RES-11, DEP-05 | Responsable de despliegues | Pendiente | Pendiente |
+| PEN-02 | Crear la aplicación de Clerk, configurar los orígenes de local, Vercel y EC2, y definir las variables de configuración del frontend y del backend. | RF-06, INT-04, INT-05, DEP-04 | Responsable de despliegues | 26/10/2026 | Resuelto 28/10/2026: aplicación de Clerk creada por Mario (CLERK_ISSUER=https://ultimate-mullet-5413.clerk.accounts.dev) y orígenes configurados para local, Vercel (https://musicfy-app2.vercel.app) y EC2 (https://32-200-106-42.sslip.io). |
+| PEN-03 | Confirmar con el docente el acceso a AWS, la región, el presupuesto y el nombre de dominio para HTTPS. | RES-07, RES-11, DEP-05 | Responsable de despliegues | 28/10/2026 | Resuelto 28/10/2026: despliegue en AWS Academy Learner Lab en región permitida (us-east-1/eu-west-3), presupuesto dentro del lab sin IP elástica fija; dominio HTTPS resuelto automáticamente con Caddy y Let's Encrypt sobre sslip.io (https://32-200-106-42.sslip.io). |
 | PEN-04 | Confirmar el código de error de autenticación (`NO_AUTORIZADO`) y el texto de su mensaje. | RF-06, DAT-03 | Equipo | 26/10/2026 | Resuelto 26/10/2026: código NO_AUTORIZADO con el mensaje «Tu sesión no es válida o ha caducado. Inicia sesión de nuevo.» (contracts/api.md). |
 | PEN-05 | Confirmar los nombres definitivos de los tests de App 2 y actualizar la sección 8. | Sección 8 | Responsable de pruebas | 27/10/2026 | Resuelto 27/10/2026: tests implementados y en verde (59); nombres en docs/pruebas.md. |
-| PEN-06 | Anotar las URL de Vercel y de EC2 de App 2 cuando estén desplegadas. | RES-07, OBJ-06 | Responsable de despliegues | 28/10/2026 | Pendiente |
-| PEN-07 | Revisión cruzada de esta ERS por los tres integrantes. | Todos | Equipo | Pendiente | Parcial 28/10/2026: revisada por Jose Antonio. Pendiente: Mario. |
+| PEN-06 | Anotar las URL de Vercel y de EC2 de App 2 cuando estén desplegadas. | RES-07, OBJ-06 | Responsable de despliegues | 28/10/2026 | Resuelto 28/10/2026: Vercel frontend: https://musicfy-app2.vercel.app/ (backend: https://musicfy-app2-api.vercel.app/); EC2 HTTPS: https://32-200-106-42.sslip.io/. |
+| PEN-07 | Revisión cruzada de esta ERS por los tres integrantes. | Todos | Equipo | 28/10/2026 | Resuelto 28/10/2026: revisión cruzada completada con conformidad de los tres integrantes (Mario Luna Lopez, Jose Antonio Nieto Perez y David Molina Castillo). |
 
 ## 10. Revisión y conformidad
 
@@ -545,21 +546,21 @@ La prueba técnica PR-01 (`GET /health`) comprueba que el backend responde sin n
 - [x] El problema, los objetivos y los límites del sistema están definidos.
 - [x] Se identifican los usuarios y sus permisos.
 - [x] Cada requisito tiene un identificador único.
-- [ ] Los requisitos son claros, necesarios y no se contradicen.
+- [x] Los requisitos son claros, necesarios y no se contradicen.
 - [x] Cada requisito funcional expresa una obligación y tiene criterios de aceptación verificables.
 - [x] Se contemplan los errores y los casos límite relevantes.
 - [x] Los requisitos no funcionales incluyen medidas y condiciones de comprobación.
 - [x] Los datos, las reglas de negocio y las interfaces están descritos.
 - [x] Todos los requisitos están relacionados con su origen y su comprobación.
 - [x] Las dudas pendientes están identificadas y tienen un responsable.
-- [ ] Se han sustituido los marcadores, eliminado los ejemplos y justificado los apartados que no aplican.
+- [x] Se han sustituido los marcadores, eliminado los ejemplos y justificado los apartados que no aplican.
 - [x] Se han actualizado la fecha, la versión y el historial de cambios.
 
 ### 10.2. Registro de revisión
 
 | Revisor y rol | Versión revisada | Fecha | Resultado | Observaciones |
 |---|---|---|---|---|
-| Mario Luna Lopez | 0.1 | Pendiente | Pendiente | Pendiente |
+| Mario Luna Lopez | 0.4 y 1.0 | 28/10/2026 | Conforme | Revisado el plan técnico, orígenes de Clerk, despliegues en EC2/Vercel y contrato de errores. |
 | Jose Antonio Nieto Perez | 0.3 | 28/10/2026 | Conforme | Cuadra con lo implementado. Retoques aplicados en la versión 0.4. |
 | David Molina Castillo | 0.1 a 0.4 | 28/10/2026 | Conforme | Ajustada a la implementación real de App 2. |
 

@@ -83,6 +83,7 @@ era OpenRouter; desde entonces es la API de Gemini de Google.
   - `git ls-files` solo incluye `backend/.env.example`.
   - `git log --all -p -S "sk-or"` no devuelve resultados: la clave nunca se ha subido al repositorio.
 - 26/10/2026 (tras el cambio a Gemini): búsqueda de `AIza`, el inicio de las claves de Gemini. Solo aparece en `backend/.env`, excluido por `.gitignore`, y `git log --all -p -S "AIza"` no devuelve resultados: la clave nunca se ha subido.
+- 28/10/2026 (App 2 en Docker y EC2): comprobación con `docker history` de las imágenes `api` y `web`. Ninguna capa incluye variables de entorno con secretos ni archivos `.env` (excluidos por `.dockerignore`). En los estáticos del frontend solo aparece `VITE_CLERK_PUBLISHABLE_KEY`.
 
 ### PR-15. No se conservan datos
 
@@ -91,6 +92,10 @@ era OpenRouter; desde entonces es la API de Gemini de Google.
   - Tras una consulta, al recargar la página el resultado desaparece.
   - En F12 > Aplicación, el almacenamiento local y de sesión no contiene consultas ni resultados.
   - Tras reiniciar el backend y recargar, no aparece ninguna consulta anterior.
+- 28/10/2026 (App 2 en EC2 con Docker Compose):
+  - Tras realizar recomendaciones, se ejecuta `docker compose down && docker compose up -d`.
+  - Al recargar la página no queda ningún historial, y al cerrar sesión en Clerk el resultado desaparece inmediatamente.
+  - El único volumen Docker persistente es `caddy_data`, utilizado exclusivamente para la caché de certificados TLS de Let's Encrypt.
 
 ### PR-16. Comportamiento del formulario
 
@@ -173,14 +178,14 @@ En todos los casos, salvo los de PR-18 a PR-20, se usa un token válido simulado
 
 | ID ERS | Qué se comprueba | Dónde | Estado |
 |--------|------------------|-------|--------|
-| PR-13 | Petición válida con la IA real y una sesión real de Clerk: 200 con recomendaciones | Local, Vercel y EC2 | Parcial (2026-10-27, local): con sesión real de Clerk y la API de Gemini, la pantalla muestra recomendaciones. Vercel (2026-10-28): también. Falta EC2 |
-| PR-14 | La clave de la IA y las claves secretas de Clerk no están en el frontend, el repositorio, su historial ni las imágenes Docker | Repositorio e imágenes | Parcial (2026-10-27): solo `.env.example` versionados; `.env` en `.gitignore` y en los dos `.dockerignore`; la clave de Gemini no aparece en `frontend/dist` ni en `git log -p --all`. Falta revisar las imágenes Docker |
-| PR-15 | No se conservan datos tras recargar la página y reiniciar el backend y los contenedores | Local, Docker y EC2 | Pendiente |
+| PR-13 | Petición válida con la IA real y una sesión real de Clerk: 200 con recomendaciones | Local, Vercel y EC2 | Pasa (2026-10-27, local; 2026-10-28, Vercel y EC2): con sesión real de Clerk y la API de Gemini, la pantalla muestra recomendaciones en local, en Vercel (https://musicfy-app2.vercel.app/) y en EC2 con HTTPS (https://32-200-106-42.sslip.io/). |
+| PR-14 | La clave de la IA y las claves secretas de Clerk no están en el frontend, el repositorio, su historial ni las imágenes Docker | Repositorio e imágenes | Pasa (2026-10-28): solo `.env.example` versionados; `.env` en `.gitignore` y en los dos `.dockerignore`; la clave de Gemini no aparece en `frontend/dist` ni en `git log -p --all`. En las imágenes Docker (`docker history`), las capas no contienen claves secretas ni archivos `.env`. |
+| PR-15 | No se conservan datos tras recargar la página y reiniciar el backend y los contenedores | Local, Docker y EC2 | Pasa (2026-10-28): verificado en local y en EC2 con `docker compose down && docker compose up -d`. Al reiniciar y recargar la página no queda ningún dato ni historial de recomendaciones; el único volumen persistente es `caddy_data` (certificados TLS). |
 | PR-16 | Formulario: géneros y texto, solo géneros, nada, doble envío y cierre de sesión con un resultado en pantalla | Navegador con F12 | Pasa (2026-10-27, local): géneros y texto, y solo géneros, devuelven recomendaciones; sin nada aparece el aviso y no se envía; el botón se desactiva durante la espera; al cerrar sesión desaparece el resultado y el botón se desactiva |
 | PR-17 | Accesibilidad con teclado, incluido el acceso de Clerk, y vista de 320 px | Navegador | Pasa (2026-10-27, local): con el tabulador se llega a todos los controles con foco visible y el género seleccionado se distingue por la marca ✓; a 320 px no hay desplazamiento horizontal |
-| PR-21 | Sin sesión no se puede enviar, con sesión sí, tras cerrar sesión no, una llamada directa al backend sin token recibe 401 | Vercel y EC2 | Parcial (2026-10-27, local con `.env` real): sin token → 401 `NO_AUTORIZADO`; sin token y cuerpo no JSON → 401; token falso contra el JWKS real de Clerk → 401; el registro del servidor no contiene datos ni tokens. En el navegador, sin sesión no se puede enviar, con sesión sí y tras cerrar sesión no. Vercel (2026-10-28): sin sesión el botón está desactivado, con sesión se reciben recomendaciones y la llamada directa al backend sin token devuelve 401 `NO_AUTORIZADO`. Falta EC2 |
+| PR-21 | Sin sesión no se puede enviar, con sesión sí, tras cerrar sesión no, una llamada directa al backend sin token recibe 401 | Vercel y EC2 | Pasa (2026-10-28): verificado en local, Vercel y EC2. Sin sesión el botón está desactivado, con sesión se reciben recomendaciones y la llamada directa al backend sin token devuelve 401 `NO_AUTORIZADO`. |
 | PR-22 | Desde la URL de Vercel: un caso válido con sesión y uno de error | Vercel | Pasa (2026-10-28): https://musicfy-app2.vercel.app/ con sesión devuelve recomendaciones; `POST /api/recommend` al backend sin token → 401. Capturas en `docs/evidencias/app2-vercel-*.png` |
-| PR-23 | Desde la URL HTTPS de EC2, en otro dispositivo: acceso con Clerk, un caso válido, uno de error y reinicio de los contenedores | EC2 | Pendiente |
+| PR-23 | Desde la URL HTTPS de EC2, en otro dispositivo: acceso con Clerk, un caso válido, uno de error y reinicio de los contenedores | EC2 | Pasa (2026-10-28): probado desde dispositivo móvil en https://32-200-106-42.sslip.io/ con certificado Let's Encrypt válido. Caso válido con sesión: 200 con artistas recomendados. Caso error sin token: 401 `NO_AUTORIZADO`. Reinicio de contenedores sin datos residuales. Capturas en `docs/evidencias/app2-ec2-*.png`. |
 
 ## Errores encontrados en las pruebas manuales
 
