@@ -211,3 +211,34 @@ Pasos, variables y comprobaciones: [`docs/despliegues.md`](docs/despliegues.md).
 |---|---|
 | `app1-final` | App 1 terminada y ERS 1.0 aprobada, antes de empezar la App 2 |
 | `entrega-ud1` | Versión entregada |
+
+## Cómo comprobar los casos de error
+
+Se prueban desde la consola del navegador (F12 → Console), con la app abierta.
+
+**App 1 · Entrada vacía → 422** (en https://proyectowebia.vercel.app):
+
+```js
+fetch('/api/recommend', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ tastes: '' })
+}).then(r => r.json().then(d => console.log(r.status, d)))
+```
+
+Resultado esperado: `422` con el error de validación. El backend no llama a la IA.
+
+**App 2 · Sin sesión → 401** (en https://musicfy-app2.vercel.app):
+
+```js
+fetch('https://musicfy-app2-api.vercel.app/api/recommend', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ tastes: 'rock' })
+}).then(r => r.json().then(d => console.log(r.status, d)))
+```
+
+Resultado esperado: `401` con `{"error": {"codigo": "NO_AUTORIZADO", ...}}`. Sin token, el backend no llama a la IA.
+
+Los errores de la IA (`502` y `504`) se comprueban con las pruebas automáticas, simulando la IA (ver [`docs/pruebas.md`](docs/pruebas.md)).
+
