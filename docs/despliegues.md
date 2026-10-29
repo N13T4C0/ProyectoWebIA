@@ -133,7 +133,7 @@ El despliegue se realiza sobre la plataforma educativa **AWS Academy Learner Lab
 | Parámetro | Valor | Justificación / Observaciones |
 |---|---|---|
 | **Región** | `us-east-1` (N. Virginia) | Región autorizada por defecto en el Learner Lab. |
-| **Instancia** | `t3.micro` (2 vCPU, 1 GiB RAM) | Capacidad autorizada en la capa de laboratorio. Requiere 2 GiB de memoria swap para compilar el frontend sin agotar la RAM. |
+| **Instancia** | `t2.small` (1 vCPU, 2 GiB RAM) | Capacidad autorizada en AWS Academy Learner Lab. Dispone de 2 GiB de memoria RAM nativa (con 2 GiB de swap configurados como salvaguarda) para compilar y ejecutar el frontend y backend en Docker con total fluidez. |
 | **Sistema Operativo** | Ubuntu Server 24.04 LTS (x86_64) | Imagen oficial de Canonical (`ami` de Ubuntu). |
 | **Perfil IAM** | `LabInstanceProfile` | Rol preconfigurado de AWS Academy para instancias EC2. |
 | **Almacenamiento** | 16 GiB gp3 | Volumen raíz EBS de la instancia. |
@@ -182,7 +182,7 @@ Los secretos **nunca viajan en el repositorio ni en las imágenes Docker**:
 
 #### Pasos para el Primer Despliegue
 
-1. **Lanzar la instancia:** En la consola de AWS Academy Learner Lab (`us-east-1`), lanzar Ubuntu 24.04 LTS (`t3.micro`) con `LabInstanceProfile`.
+1. **Lanzar la instancia:** En la consola de AWS Academy Learner Lab (`us-east-1`), lanzar Ubuntu 24.04 LTS (`t2.small`, nombre `musicfy-app2`) con `LabInstanceProfile`.
 2. **Grupo de seguridad:** Abrir TCP 22 (SSH desde Mi IP), TCP 80 (HTTP) y TCP 443 (HTTPS).
 3. **Memoria swap y Docker:** Conectar por SSH y ejecutar:
    ```bash
